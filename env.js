@@ -1,0 +1,12 @@
+export const dialogflowConfig = {
+  "type": "service_account",
+  "project_id": "escapism-bot-htlgdt",
+  "private_key_id": "4fe1d6f189a882577751a9022c681278ad926574",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDUboxz6vc5fpow\nlxv4ZlJyvK6VGXvSXfaMOe5Mw4kofGHz5JY+A4Gm6gVOCkUiy2A1Ne5gBFIwSTmq\nTzu3wl4SkU51rI9NXHPe4zS9LZIEDllUAmwsOXIe7gSwoWfZtnjKdCUBoeVAHzYp\nngJDP8ReBHJI21yHPqZanWAy4zoCApWdLOnVYiNaxxfQMb8RkC0cMpZRB2+QD6F7\nZHjs2MOjxfJbRTehLl9NQ1l8i4DusFMSqqesZyGirVuaDGOZ2w7Dt5O+HzsRDVmR\nNVUliHDx9eMeBJnl6kEFrG0vQuUkRdph2TdXW4ledbSRUV36DdRqIZwhzna+vy6Z\n5kTBAxtrAgMBAAECggEANOZSk4svhWHBg9gdXv4cCfZygy6VZw1/F+xVK0iGH07a\nFaIWx9qXrrkYGRb1oHSEwLttYPuye9PASGjytg/w3S7SGvuds+YR9K8fsvxmIBxy\nojj4NwsXIByljlajRdPqwH+rt3xZWl5rXnG6noSCoeb5jqsRn5w6UNZf3kw3ZchK\nk6H8t7MDpn6Dq8UP4WkQqvM50woyu02dnQ9eyZS27wb1xElnVmol4Rees23/8HFF\nufxO0VqjKzQ4rswqm/Jc0B+Ix7sb3T42A/Z4ZVRoybz5pskGu2IOdfuT7qnfRRGq\nrlWQ9K/n3G8i+oQq0Jg1/fsk8upF9C3mF4eveMaWAQKBgQD5H7MQf4W4YyFozyLP\naECWBLSl6HWayg5yc+PjDY3AidOAHOK8fGa4HgZB3Qy4PcQIyFWSfeCflu9hYKhS\nbarDFCDWFpldXkirTiZNUJYj8tfXRxCj3l3kdvRTTcGIay9x5MTAOsEOCn0wtr5T\nxfz/faOq/edLEfv7kPa/92P25wKBgQDaS5WzyZEyWP5fB/LlBMdGds2tDCVRLGYw\nXiNJLsyCimtX9x6Isw/+WXFMqFTRP7Y7jpEuEMLsXrNgEypx7Hy1DwTIFOOtIMpm\n8w0Uclx+uEAgXG66upxFFxhScRm9XfeKnzWbF5IAp/B+LkosAtN9PAjwavFSWaCn\nZ5cQU1Ca3QKBgGOwNKZocSkMugTHxoU6kYW2kldFgzISot9X0pw8AzpFrNW6OVz1\nZuFMWnKmsv1S8gwVpnB9YJJcAqRz2kdJzShM+KrS1kIPhYLPPfJ4SexOs+JYdKcu\nR2Ix26kuF0Cwq4am5biKilBFED2bEuRQ+OF/9CtreM+Ifc33/1Vn+J+HAoGBANT3\nQqB4+Ld2zQtnVNeLduJOy0+U9t8fgr6TSLd/+bMtWZYjF93jW6oYFonj+4N9Ncsa\nxpZ7cb9qkHMdn54vSmbVtSOCBbEEuZIAcvVMsOJL3Pv1UW3I2uYopujfQG5Xu0W5\nF3IsZ5tOPDjN7jzLsQqPxGTQ4Ignuq03SdB6h7vdAoGBAORC3uILQ06NAn6okHPr\nwKRobc5CH7hsHJQGuzYuCkxX4OnlUQortRbOncNO4EWAD6EzVzxuud52X0b3NR3+\n51C5Cj/aRQDv5l1Rrrl/RAvHhoZdV9mXVlVq51ahP0no1GiJrol01QJZDU6acOE4\n+zWo0UdO1P/kMgGzoEmQuF2a\n-----END PRIVATE KEY-----\n",
+  "client_email": "dialogflow-svgwtj@escapism-bot-htlgdt.iam.gserviceaccount.com",
+  "client_id": "115909983385262726427",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/dialogflow-svgwtj%40escapism-bot-htlgdt.iam.gserviceaccount.com"
+};
