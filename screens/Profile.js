@@ -6,6 +6,8 @@ import {
   Image,
   TouchableOpacity
 } from 'react-native';
+console.disableYellowBox=true;
+
 import { withFirebaseHOC } from '../config/Firebase'
 
 class Profile extends Component {

@@ -10,6 +10,7 @@ import FormButton from '../components/FormButton'
 import ErrorMessage from '../components/ErrorMessage'
 import AppLogo from '../components/AppLogo'
 import { withFirebaseHOC } from '../config/Firebase'
+console.disableYellowBox=true;
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()

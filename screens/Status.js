@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+console.disableYellowBox=true;
 
 
   class Status extends Component{

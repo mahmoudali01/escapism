@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { Text, View } from 'react-native';
 
+console.disableYellowBox=true;
 
   class Recommend extends Component{
     render(){

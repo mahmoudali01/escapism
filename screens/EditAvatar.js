@@ -4,6 +4,7 @@ import { Button, Text } from 'react-native-ui-kitten'
 import * as ImagePicker from 'expo-image-picker';
 
 import { withFirebaseHOC } from '../config/Firebase'
+console.disableYellowBox=true;
 
 class EditAvatar extends Component {
   state = {
