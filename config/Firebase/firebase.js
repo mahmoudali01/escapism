@@ -1,13 +1,13 @@
 import * as firebase from 'firebase'
 import 'firebase/auth'
-import 'firebase/firestore'
 import firebaseConfig from './firebaseConfig'
 
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig); }
 
 const Firebase = {
-  // auth
+
+   // auth
   loginWithEmail: (email, password) => {
     return firebase.auth().signInWithEmailAndPassword(email, password)
   },
@@ -24,7 +24,6 @@ const Firebase = {
     return firebase.auth().sendPasswordResetEmail(email)
   },
   createNewUser: userData =>{
-
     firebase.database().ref('users/').child(`${userData.uid}`).set(userData).then((data)=>{
         console.log('data ' , data)
     }).catch((error)=>{
@@ -39,8 +38,10 @@ getUserDetails: () => {
        var name = snapshot.child("name").val();
        var email = snapshot.child("email").val();
        var uri = snapshot.child("avatar").val();
+       var uid = snapshot.child("uid").val();
 
-       var arr =[name,email,uri];
+
+       var arr =[name,email,uri,uid];
        return arr;
      })
      .catch(function(error) {
@@ -58,9 +59,45 @@ getUserDetails: () => {
        const snapshot = await ref.put(blob);
       var image = await snapshot.ref.getDownloadURL();
       return firebase.database().ref('users/').child(`${userid}`).update( {avatar: image});
-     }
+    },
 
 
+     fetchChat: ()=> {
+       let user = firebase.auth().currentUser
+         var userid= user.uid;
+           return firebase.database().ref('users/' + `${userid}`).child('chat').limitToLast(20).once('value').then((snapshot) => {
+
+        const chatObject = snapshot.val();
+
+        let chatList = Object.keys(chatObject).map(key => ({
+         ...chatObject[key],
+       }));
+
+        console.log('chat: ',chatList )
+
+
+         })
+         .catch(function(error) {
+           console.log('Error getting user: ', error)
+         })
+
+  },
+
+pushMessage: message  =>{
+     let user = firebase.auth().currentUser
+     var userid= user.uid;
+
+     firebase.database().ref('users/' + `${userid}`).child('chat').push(
+       { _id:message._id,
+         text: message.text,
+         user:message.user
+       }
+     ).then((data)=>{
+         console.log('data ' , data)
+     }).catch((error)=>{
+         console.log('error ' , error)
+     })
+    },
 }
 
 export default Firebase

@@ -6,14 +6,12 @@ import {
   Image,
   TouchableOpacity
 } from 'react-native';
-// import { Button } from 'react-native-elements'
 import { withFirebaseHOC } from '../config/Firebase'
-// import Gallery from '../components/Gallery'
 
 class Profile extends Component {
   state = {
-     images: [],
-     userDetails: []}
+     userDetails: []
+   }
 
  componentDidMount() {
      this.fetchUserDetails()
@@ -42,7 +40,7 @@ class Profile extends Component {
    }
 
   render() {
-    const { images, userDetails } = this.state
+    const {  userDetails } = this.state
     const img ={uri: userDetails[2]};
     return (
           <View style={styles.container}>

@@ -42,7 +42,9 @@ class EditAvatar extends Component {
       // const avatarImage = this.state.avatarImage
       let aImage = this.state.aImage
 
-      this.props.firebase.uploadAvatar(aImage)
+      await this.props.firebase.uploadAvatar(aImage);
+      // await this.props.firebase.getUserDetails();
+
 
       this.setState({
         avatarImage: null,

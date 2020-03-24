@@ -2,16 +2,16 @@ import React from 'react'
 import { createAppContainer } from 'react-navigation'
 import { createBottomTabNavigator } from 'react-navigation-tabs'
 import { MaterialCommunityIcons } from 'react-native-vector-icons';
- import {  ProfileNavigator } from './StackNavigator'
-import Chatbot from '../screens/Chatbot';
-import MTracker from '../screens/MTracker';
-import Status from '../screens/Status';
-import Recommend from '../screens/Recommend';
+ import {  ProfileNavigator ,HomeNavigator ,StatusNavigator ,RecommendNavigator ,TrackerNavigator } from './StackNavigator'
+// import Chatbot from '../screens/Chatbot';
+// import MTracker from '../screens/MTracker';
+// import Status from '../screens/Status';
+// import Recommend from '../screens/Recommend';
 
 const TabNavigator = createBottomTabNavigator(
   {
     Home: {
-      screen: Chatbot,
+      screen: HomeNavigator,
       navigationOptions: {
           title: 'Escapism',
           tabBarLabel:'Escapism' ,
@@ -22,7 +22,7 @@ const TabNavigator = createBottomTabNavigator(
       }
     },
     Recommend: {
-      screen: Recommend,
+      screen: RecommendNavigator,
       navigationOptions: {
         title: 'Recommend',
         tabBarLabel:'Recommend' ,
@@ -33,7 +33,7 @@ const TabNavigator = createBottomTabNavigator(
       }
     },
     MTracker: {
-      screen: MTracker,
+      screen: TrackerNavigator,
       navigationOptions: {
         title: 'MTracker',
         tabBarLabel:'MTracker' ,
@@ -45,7 +45,7 @@ const TabNavigator = createBottomTabNavigator(
       }
     },
     Status: {
-      screen: Status,
+      screen: StatusNavigator,
       navigationOptions: {
         title: 'Status',
         tabBarLabel:'Status' ,
