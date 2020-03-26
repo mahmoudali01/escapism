@@ -33,6 +33,7 @@ const BOT_USER = {
         dialogflowConfig.project_id
       );
     };
+    
     fetchUserDetails = async () => {
       try {
            var userDetails = await this.props.firebase.getUserDetails();

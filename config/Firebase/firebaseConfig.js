@@ -2,12 +2,12 @@
 // Replace all Xs with real Firebase API keys
 
 export default {
-    apiKey: "AIzaSyApkcL8WVyM2uihCTyKAvF_vVZF9r119yE",
-    authDomain: "test-qooipb.firebaseapp.com",
-    databaseURL: "https://test-qooipb.firebaseio.com",
-    projectId: "test-qooipb",
-    storageBucket: "test-qooipb.appspot.com",
-    messagingSenderId: "609978395718",
-    appId: "1:609978395718:web:5f35fc6b197e7e4b682e47",
-    measurementId: "G-JD6GBZV33G"
+  apiKey: "AIzaSyBiKQ88uPUdquD-lPb85CRE222JO6v4IRo",
+    authDomain: "faq-bot-vugdal.firebaseapp.com",
+    databaseURL: "https://faq-bot-vugdal.firebaseio.com",
+    projectId: "faq-bot-vugdal",
+    storageBucket: "faq-bot-vugdal.appspot.com",
+    messagingSenderId: "504338198686",
+    appId: "1:504338198686:web:701eee44cb880eb2e98b8f",
+    measurementId: "G-43RKHJWZ1M"
 }

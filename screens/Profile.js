@@ -18,7 +18,9 @@ class Profile extends Component {
  componentDidMount() {
      this.fetchUserDetails()
    }
-
+   componentWillUnmount() {
+      this.props.fire.off();
+    }
    fetchUserDetails = async () => {
      try {
           var userDetails = await this.props.firebase.getUserDetails();

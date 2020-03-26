@@ -30,7 +30,6 @@ class EditAvatar extends Component {
      return;
    }
           const source = { uri: pickerResult.uri }
-          // let img = pickerResult.uri;
           this.setState({
                avatarImage: source,
                aImage: pickerResult.uri
@@ -40,10 +39,17 @@ class EditAvatar extends Component {
 
   onSubmit = async () => {
     try {
-      // const avatarImage = this.state.avatarImage
       let aImage = this.state.aImage
 
       await this.props.firebase.uploadAvatar(aImage);
+      // if (avatarImage === null){
+      //   return;
+      // }
+      // else{
+      //   this.props.navigation.navigate('Profile')
+      //
+      // }
+
       // await this.props.firebase.getUserDetails();
 
 
@@ -52,10 +58,18 @@ class EditAvatar extends Component {
         aImage:""
 
       })
+
     } catch (e) {
       console.error(e)
     }
   }
+//   refresh = async () => {
+//     await this.props.firebase.getUserDetails();
+// }
+//
+//   componentDidMount() {
+//      this.refresh()
+//     }
 
   render() {
     return (

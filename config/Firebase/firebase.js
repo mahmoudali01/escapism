@@ -24,7 +24,9 @@ const Firebase = {
     return firebase.auth().sendPasswordResetEmail(email)
   },
   createNewUser: userData =>{
-    firebase.database().ref('users/').child(`${userData.uid}`).set(userData).then((data)=>{
+    var ref =firebase.database().ref('users/').child(`${userData.uid}`);
+    ref.set(userData).then((data)=>{
+    //  ref.off();
         console.log('data ' , data)
     }).catch((error)=>{
         console.log('error ' , error)
@@ -34,7 +36,9 @@ const Firebase = {
 getUserDetails: () => {
    let user = firebase.auth().currentUser
      var userid= user.uid;
-       return firebase.database().ref('users/').child(`${userid}`).once('value').then((snapshot) => {
+     var ref = firebase.database().ref('users/').child(`${userid}`);
+
+       return ref.once('value').then((snapshot) => {
        var name = snapshot.child("name").val();
        var email = snapshot.child("email").val();
        var uri = snapshot.child("avatar").val();
@@ -43,29 +47,32 @@ getUserDetails: () => {
 
        var arr =[name,email,uri,uid];
        return arr;
-     })
-     .catch(function(error) {
-       console.log('Error getting user: ', error)
+      // ref.off();
+     }).catch(function(error) {
+       console.log( error)
      })
  },
 
   uploadAvatar:async (avatarImage) => {
-     let user = firebase.auth().currentUser
-     var userid= user.uid;
-        const response = await fetch(avatarImage);
-       const blob = await response.blob();
+    let user = firebase.auth().currentUser
+   var userid= user.uid;
+      const response = await fetch(avatarImage);
+     const blob = await response.blob();
 
-       var ref = firebase.storage().ref().child("userPic/" + `${userid}`);
-       const snapshot = await ref.put(blob);
-      var image = await snapshot.ref.getDownloadURL();
-      return firebase.database().ref('users/').child(`${userid}`).update( {avatar: image});
+     var ref = firebase.storage().ref().child("userPic/" + `${userid}`);
+     const snapshot = await ref.put(blob);
+    var image = await snapshot.ref.getDownloadURL();
+    var ref = firebase.database().ref('users/').child(`${userid}`);
+    return ref.update( {avatar: image});
+    //ref.off();
     },
 
 
      fetchChat: ()=> {
        let user = firebase.auth().currentUser
          var userid= user.uid;
-           return firebase.database().ref('users/' + `${userid}`).child('chat').orderByChild("createdAt").limitToLast(20).once('value').then((snapshot) => {
+         var ref = firebase.database().ref('users/' + `${userid}`).child('chat');
+           return ref.once('value').then((snapshot) => {
 
         const chatObject = snapshot.val();
 
@@ -76,9 +83,9 @@ getUserDetails: () => {
 
 
           return chatList.reverse();
-         })
-         .catch(function(error) {
-           console.log('Error getting user: ', error)
+      //    ref.off();
+         }).catch(function(error) {
+           console.log( error)
          })
 
   },
@@ -87,7 +94,8 @@ pushMessage: message  =>{
      let user = firebase.auth().currentUser;
      var userid= user.uid;
       var ts = firebase.database.ServerValue.TIMESTAMP;
-     firebase.database().ref('users/' + `${userid}`).child('chat').push(
+      var ref = firebase.database().ref('users/' + `${userid}`).child('chat');
+     ref.push(
        {
          _id:message._id,
          text: message.text,
@@ -95,11 +103,18 @@ pushMessage: message  =>{
          user:message.user
        }
      ).then((data)=>{
-         console.log('data ' , data)
+      // ref.off();
      }).catch((error)=>{
          console.log('error ' , error)
      })
     },
-}
+    off: async()=> {
+      let user = firebase.auth().currentUser;
+      var userid= user.uid;
+      var ref = firebase.database().ref('users/').child(`${userid}`);
+      await ref.off();
+    },
+
+    }
 
 export default Firebase
