@@ -65,17 +65,17 @@ getUserDetails: () => {
      fetchChat: ()=> {
        let user = firebase.auth().currentUser
          var userid= user.uid;
-           return firebase.database().ref('users/' + `${userid}`).child('chat').limitToLast(20).once('value').then((snapshot) => {
+           return firebase.database().ref('users/' + `${userid}`).child('chat').orderByChild("createdAt").limitToLast(20).once('value').then((snapshot) => {
 
         const chatObject = snapshot.val();
+
 
         let chatList = Object.keys(chatObject).map(key => ({
          ...chatObject[key],
        }));
 
-        console.log('chat: ',chatList )
 
-
+          return chatList.reverse();
          })
          .catch(function(error) {
            console.log('Error getting user: ', error)
@@ -84,12 +84,14 @@ getUserDetails: () => {
   },
 
 pushMessage: message  =>{
-     let user = firebase.auth().currentUser
+     let user = firebase.auth().currentUser;
      var userid= user.uid;
-
+      var ts = firebase.database.ServerValue.TIMESTAMP;
      firebase.database().ref('users/' + `${userid}`).child('chat').push(
-       { _id:message._id,
+       {
+         _id:message._id,
          text: message.text,
+         createdAt: ts,
          user:message.user
        }
      ).then((data)=>{

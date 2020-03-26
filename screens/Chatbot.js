@@ -12,20 +12,18 @@ const BOT_USER = {
     //avatar: 'https://i.imgur.com/7k12EPD.png'
   };
 
+
   class Chatbot extends Component {
     state = {
-      //{
-        // _id: 1,
-        // text: `hi "username" .\n\n tell us about your mood`,
-        // createdAt: new Date(),
-        // user: BOT_USER
-    //  }
+
       messages: [],
       userDetails: []
 
     };
 
     componentDidMount() {
+
+
        this.fetchUserChat(),
       this.fetchUserDetails(),
       Dialogflow_V2.setConfiguration(
@@ -39,7 +37,7 @@ const BOT_USER = {
       try {
            var userDetails = await this.props.firebase.getUserDetails();
            this.setState({ userDetails })
-           console.log('USER DETAILS ===========>>', userDetails)
+           // console.log('USER DETAILS ===========>>', userDetails)
          } catch (error) {
         console.log(error)
        }
@@ -47,8 +45,8 @@ const BOT_USER = {
     fetchUserChat = async () => {
       try {
            var messages = await this.props.firebase.fetchChat();
-           this.setState({ messages })
-           console.log('USER DETAILS ===========>>', messages)
+           this.setState({ messages})
+           console.log('USER chat ===========>>', messages)
          } catch (error) {
         console.log(error)
        }
@@ -99,6 +97,7 @@ const BOT_USER = {
               createdAt: new Date(),
               name: userDetails[0],
               email:  userDetails[1],
+              avatar: userDetails[2],
               id:  userDetails[3],
             }}
           />
