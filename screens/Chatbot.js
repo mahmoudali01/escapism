@@ -128,9 +128,8 @@ const BOT_USER = {
               avatar: userDetails[2],
               id:  userDetails[3],
             }}
-            renderActions={this.renderCustomActions} // for rendering button for attaching files
+            renderActions={this.renderCustomActions}
 
-            //isTyping = 'true';
           />
         </View>
       );
