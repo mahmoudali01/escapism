@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { GiftedChat } from 'react-native-gifted-chat';
+import { StyleSheet, Text, View ,TouchableOpacity} from 'react-native';
+import { GiftedChat  } from 'react-native-gifted-chat';
 import { Dialogflow_V2 } from 'react-native-dialogflow';
 import { dialogflowConfig } from '../env';
 import { withFirebaseHOC } from '../config/Firebase'
+import { MaterialCommunityIcons } from 'react-native-vector-icons';
+import { Icon } from 'react-native-elements'
+
 
 console.disableYellowBox=true;
 const BOT_USER = {
@@ -17,7 +20,9 @@ const BOT_USER = {
     state = {
 
       messages: [],
-      userDetails: []
+      userDetails: [],
+      is_picking_video: false,
+
 
     };
 
@@ -33,7 +38,7 @@ const BOT_USER = {
         dialogflowConfig.project_id
       );
     };
-    
+
     fetchUserDetails = async () => {
       try {
            var userDetails = await this.props.firebase.getUserDetails();
@@ -53,7 +58,7 @@ const BOT_USER = {
        }
     }
     handleGoogleResponse(result) {
-      let text = result.queryResult.fulfillmentMessages[0].text.text[0];
+      let text  = result.queryResult.fulfillmentMessages[0].text.text[0];
       this.sendBotResponse(text);
     };
     onSend = async (messages = []) => {
@@ -84,6 +89,25 @@ const BOT_USER = {
        await this.props.firebase.pushMessage(msg);
 
     };
+    renderCustomActions = () => {
+    // if (!this.state.is_picking_video) {
+
+      return (
+        <View style={styles.customActionsContainer}>
+          <TouchableOpacity >
+            <View style={styles.buttonContainer}>
+            <Icon
+              name='camera'
+              color='black' />
+               </View>
+          </TouchableOpacity>
+        </View>
+      );
+    // }
+
+
+  }
+
 
     render() {
       const { userDetails , messages } = this.state
@@ -91,6 +115,9 @@ const BOT_USER = {
       return (
         <View style={{ flex: 1, backgroundColor: '#FBF0D2' }}>
           <GiftedChat
+            showUserAvatar = 'true'
+            isTyping = 'true'
+            placeholder = 'chat with me'
             messages={this.state.messages}
             onSend={messages => this.onSend(messages)}
             user={{
@@ -101,9 +128,21 @@ const BOT_USER = {
               avatar: userDetails[2],
               id:  userDetails[3],
             }}
+            renderActions={this.renderCustomActions} // for rendering button for attaching files
+
+            //isTyping = 'true';
           />
         </View>
       );
     }
   }
+  const styles = StyleSheet.create({
+    customActionsContainer: {
+     flexDirection: "row",
+     justifyContent: "space-between"
+   },
+   buttonContainer: {
+     padding: 10
+   },
+  })
 export default withFirebaseHOC(Chatbot);
