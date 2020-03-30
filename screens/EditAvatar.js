@@ -14,9 +14,7 @@ class EditAvatar extends Component {
 
 
   selectImage = async () => {
-    const options = {
-        noData: true
-       }
+  
     let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
 
    if (permissionResult.granted === false) {
@@ -42,15 +40,10 @@ class EditAvatar extends Component {
       let aImage = this.state.aImage
 
       await this.props.firebase.uploadAvatar(aImage);
-      // if (avatarImage === null){
-      //   return;
-      // }
-      // else{
-      //   this.props.navigation.navigate('Profile')
-      //
-      // }
 
-      // await this.props.firebase.getUserDetails();
+
+    let  usrDetails= await this.props.firebase.getUserDetails();
+      this.props.navigation.state.params.Profile.setState({userDetails:usrDetails});
 
 
       this.setState({
@@ -63,13 +56,7 @@ class EditAvatar extends Component {
       console.error(e)
     }
   }
-//   refresh = async () => {
-//     await this.props.firebase.getUserDetails();
-// }
-//
-//   componentDidMount() {
-//      this.refresh()
-//     }
+
 
   render() {
     return (

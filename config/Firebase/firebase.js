@@ -1,7 +1,7 @@
 import * as firebase from 'firebase'
 import 'firebase/auth'
 import firebaseConfig from './firebaseConfig'
-
+// import BOT_USER from '../screens/Chatbot';
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig); }
 
@@ -24,13 +24,27 @@ const Firebase = {
     return firebase.auth().sendPasswordResetEmail(email)
   },
   createNewUser: userData =>{
-    var ref =firebase.database().ref('users/').child(`${userData.uid}`);
+    const BOT_USER = {
+       _id: 2,
+       name: 'escapism bot',
+     };
+    var ref =firebase.database().ref('users/' + `${userData.uid}`);
     ref.set(userData).then((data)=>{
     //  ref.off();
         console.log('data ' , data)
     }).catch((error)=>{
         console.log('error ' , error)
     })
+    var ts = firebase.database.ServerValue.TIMESTAMP;
+   var name =userData.name;
+   const msg=
+   { _id:1,
+     text: `hi ${userData.name} this is escapism we are here for you feel free talk to me`,
+     createdAt: ts,
+     user: BOT_USER,
+   }
+     return ref.child('chat').push(msg);
+
 },
 
 getUserDetails: () => {
@@ -68,13 +82,15 @@ getUserDetails: () => {
     },
 
 
+
+
      fetchChat: ()=> {
        let user = firebase.auth().currentUser
          var userid= user.uid;
+         if(user){
          var ref = firebase.database().ref('users/' + `${userid}`).child('chat');
            return ref.once('value').then((snapshot) => {
-
-        const chatObject = snapshot.val();
+         const chatObject = snapshot.val();
 
 
         let chatList = Object.keys(chatObject).map(key => ({
@@ -83,10 +99,12 @@ getUserDetails: () => {
 
 
           return chatList.reverse();
+          latestSnapshot = null;
       //    ref.off();
          }).catch(function(error) {
            console.log( error)
          })
+       }
 
   },
 

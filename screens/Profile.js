@@ -18,9 +18,7 @@ class Profile extends Component {
  componentDidMount() {
      this.fetchUserDetails()
    }
-   componentWillUnmount() {
-      this.props.fire.off();
-    }
+
    fetchUserDetails = async () => {
      try {
           var userDetails = await this.props.firebase.getUserDetails();
@@ -40,7 +38,7 @@ class Profile extends Component {
    }
 
    handleEditAvatarNavigation = () => {
-     this.props.navigation.navigate('EditAvatar')
+     this.props.navigation.navigate('EditAvatar' ,{Profile: this})
    }
 
   render() {

@@ -9,7 +9,7 @@ import { Icon } from 'react-native-elements'
 
 
 console.disableYellowBox=true;
-const BOT_USER = {
+ const BOT_USER = {
     _id: 2,
     name: 'escapism bot',
     //avatar: 'https://i.imgur.com/7k12EPD.png'
@@ -19,15 +19,21 @@ const BOT_USER = {
   class Chatbot extends Component {
     state = {
 
-      messages: [],
+      messages: [
+       //  {
+       //   _id: 1,
+       //   text: 'Hi  this is escapism feel free talk to me i am here to help',
+       //   createdAt: new Date(),
+       //   user: BOT_USER
+       // }
+      ],
       userDetails: [],
-      is_picking_video: false,
+      //is_picking_video: false,
 
 
     };
 
     componentDidMount() {
-
 
        this.fetchUserChat(),
       this.fetchUserDetails(),
@@ -48,6 +54,7 @@ const BOT_USER = {
         console.log(error)
        }
     };
+
     fetchUserChat = async () => {
       try {
            var messages = await this.props.firebase.fetchChat();
@@ -56,7 +63,8 @@ const BOT_USER = {
          } catch (error) {
         console.log(error)
        }
-    }
+    };
+
     handleGoogleResponse(result) {
       let text  = result.queryResult.fulfillmentMessages[0].text.text[0];
       this.sendBotResponse(text);
