@@ -98,7 +98,7 @@ console.disableYellowBox=true;
 
     };
     Camerashow = () => {
-    this.props.navigation.navigate('CameraVideo')
+    this.props.navigation.navigate('Camera')
   };
     renderCustomActions = () => {
     // if (!this.state.is_picking_video) {

@@ -126,12 +126,12 @@ pushMessage: message  =>{
          console.log('error ' , error)
      })
     },
-    off: async()=> {
-      let user = firebase.auth().currentUser;
-      var userid= user.uid;
-      var ref = firebase.database().ref('users/').child(`${userid}`);
-      await ref.off();
-    },
+    // off: async()=> {
+    //   let user = firebase.auth().currentUser;
+    //   var userid= user.uid;
+    //   var ref = firebase.database().ref('users/').child(`${userid}`);
+    //   await ref.off();
+    // },
     uploadVideo: async (uri) => {
     let user = firebase.auth().currentUser
     var userid= user.uid;
@@ -143,7 +143,7 @@ pushMessage: message  =>{
       let base64 = reader.result;
     };
     var name="123"+Date.now();
-    var ref = firebase.storage().ref().child("videos/" + name);
+    var ref = firebase.storage().ref("videos/" + name).child(`${userid}`);
     const result2 = await ref.put(blob)
     const downloadURL = await result2.ref.getDownloadURL();
     console.log(downloadURL);
