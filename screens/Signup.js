@@ -65,9 +65,19 @@ class Signup extends Component {
       )
 
       if (response.user.uid) {
+
         const { uid } = response.user
         const userData = { email, name, uid }
         await this.props.firebase.createNewUser(userData)
+        // const msg=[
+        // { _id:1,
+        //   text: `hi ${userData.name} this is escapism we are here for you feel free talk to me`,
+        //   createdAt: ts,
+        //   user: BOT_USER,
+        // }]
+         // let messages = await this.props.firebase.fetchChat();
+         // this.props.navigation.state.params.Home.setState({messages:msg});
+
         this.props.navigation.navigate('App')
 
       }

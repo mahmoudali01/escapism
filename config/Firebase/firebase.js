@@ -132,6 +132,23 @@ pushMessage: message  =>{
       var ref = firebase.database().ref('users/').child(`${userid}`);
       await ref.off();
     },
+    uploadVideo: async (uri) => {
+    let user = firebase.auth().currentUser
+    var userid= user.uid;
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    const reader = new FileReader();
+    reader.readAsDataURL(blob);
+    reader.onloadend = () => {
+      let base64 = reader.result;
+    };
+    var name="123"+Date.now();
+    var ref = firebase.storage().ref().child("videos/" + name);
+    const result2 = await ref.put(blob)
+    const downloadURL = await result2.ref.getDownloadURL();
+    console.log(downloadURL);
+    return result2;
+  },
 
     }
 

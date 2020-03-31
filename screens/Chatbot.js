@@ -97,12 +97,15 @@ console.disableYellowBox=true;
        await this.props.firebase.pushMessage(msg);
 
     };
+    Camerashow = () => {
+    this.props.navigation.navigate('CameraVideo')
+  };
     renderCustomActions = () => {
     // if (!this.state.is_picking_video) {
 
       return (
         <View style={styles.customActionsContainer}>
-          <TouchableOpacity >
+          <TouchableOpacity onPress={this.Camerashow}>
             <View style={styles.buttonContainer}>
             <Icon
               name='camera'
