@@ -145,16 +145,21 @@ pushMessage: message  =>{
     ref.push(text);
  },
   saveEmo: async (emo) => {
-    return firebase.database().ref('textEmo/').transaction((textEmo) => {
-      if(emo === 'happy'){
-         let oldEmo = textEmo.happy;
-         let newEmo = oldEmo +1;
-        textEmo.happy = newEmo;
-      }
+
+
+      return firebase.database().ref('textEmo').transaction((textEmo) => {
+        if(emo === "sad") {
+          let oldEmo = textEmo.sad;
+          let newEmo = oldEmo + 1 ;
+          textEmo.sad = newEmo;
+        }
+        //return textEmo;
       },
-     );
+      );
+
+
    },
-  
+
 
 
     }

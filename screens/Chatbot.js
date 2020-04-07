@@ -74,16 +74,14 @@ console.disableYellowBox=true;
       "data": form,
       "params":form,
 
-
-    })
-      .then(function(response) {
+     }).then((response) => {
         let emoObject = response.data.emotion;
         var emoition = Object.keys(emoObject).reduce((a, b) => emoObject[a] > emoObject[b] ? a : b);
-        // console.log(emoition);
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
+        this.props.firebase.saveEmo(emoition);
+         console.log(emoition);
+    }).catch((err) => {
+     console.log("ERROR: ====", err);
+   });
 
     };
 
