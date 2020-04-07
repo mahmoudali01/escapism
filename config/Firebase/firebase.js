@@ -30,7 +30,6 @@ const Firebase = {
      };
     var ref =firebase.database().ref('users/' + `${userData.uid}`);
     ref.set(userData).then((data)=>{
-    //  ref.off();
         console.log('data ' , data)
     }).catch((error)=>{
         console.log('error ' , error)
@@ -61,7 +60,6 @@ getUserDetails: () => {
 
        var arr =[name,email,uri,uid];
        return arr;
-      // ref.off();
      }).catch(function(error) {
        console.log( error)
      })
@@ -78,7 +76,6 @@ getUserDetails: () => {
     var image = await snapshot.ref.getDownloadURL();
     var ref = firebase.database().ref('users/').child(`${userid}`);
     return ref.update( {avatar: image});
-    //ref.off();
     },
 
 
@@ -99,8 +96,6 @@ getUserDetails: () => {
 
 
           return chatList.reverse();
-          latestSnapshot = null;
-      //    ref.off();
          }).catch(function(error) {
            console.log( error)
          })
@@ -121,17 +116,11 @@ pushMessage: message  =>{
          user:message.user
        }
      ).then((data)=>{
-      // ref.off();
      }).catch((error)=>{
          console.log('error ' , error)
      })
     },
-    // off: async()=> {
-    //   let user = firebase.auth().currentUser;
-    //   var userid= user.uid;
-    //   var ref = firebase.database().ref('users/').child(`${userid}`);
-    //   await ref.off();
-    // },
+
     uploadVideo: async (uri) => {
     let user = firebase.auth().currentUser
     var userid= user.uid;
@@ -149,6 +138,24 @@ pushMessage: message  =>{
     console.log(downloadURL);
     return result2;
   },
+  textApi: (text) => {
+  let user = firebase.auth().currentUser
+    var userid= user.uid;
+    var ref = firebase.database().ref('users/' + `${userid}` ).child("text");
+    ref.push(text);
+ },
+  saveEmo: async (emo) => {
+    return firebase.database().ref('textEmo/').transaction((textEmo) => {
+      if(emo === 'happy'){
+         let oldEmo = textEmo.happy;
+         let newEmo = oldEmo +1;
+        textEmo.happy = newEmo;
+      }
+      },
+     );
+   },
+  
+
 
     }
 

@@ -26,36 +26,8 @@ console.disableYellowBox=true;
 
 
     };
-    postMsg = async (msg) => {
 
-const form = new FormData()
-  form.append('api_key', 'slMrROo1PbxnRejhauzT2UU2oCWR0MWWgxRG4wgmPMc')
-  form.append('text', msg)
-  form.append('lang_code', 'en')
-
-    axios({
-      "method": "POST",
-      "url": "https://apis.paralleldots.com/v5/emotion",
-      "headers": {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      "data": form,
-      "params":form,
-
-
-    })
-      .then(function(response) {
-        let emoObject = response.data.emotion;
-        let emo = Object.keys(emoObject).reduce((a, b) => emoObject[a] > emoObject[b] ? a : b);
-        console.log("emoition ==",emo);
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-
-    };
     componentDidMount() {
-
        this.fetchUserChat(),
       this.fetchUserDetails(),
       Dialogflow_V2.setConfiguration(
@@ -86,6 +58,35 @@ const form = new FormData()
        }
     };
 
+    postMsg = async (msg) => {
+
+   const form = new FormData()
+   form.append('api_key', 'slMrROo1PbxnRejhauzT2UU2oCWR0MWWgxRG4wgmPMc')
+   form.append('text', msg)
+   form.append('lang_code', 'en')
+
+    axios({
+      "method": "POST",
+      "url": "https://apis.paralleldots.com/v5/emotion",
+      "headers": {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      "data": form,
+      "params":form,
+
+
+    })
+      .then(function(response) {
+        let emoObject = response.data.emotion;
+        var emoition = Object.keys(emoObject).reduce((a, b) => emoObject[a] > emoObject[b] ? a : b);
+        // console.log(emoition);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+
+    };
+
     handleGoogleResponse(result) {
       let text  = result.queryResult.fulfillmentMessages[0].text.text[0];
       this.sendBotResponse(text);
@@ -95,7 +96,8 @@ const form = new FormData()
         messages: GiftedChat.append(previousState.messages, messages)
       }));
       let message = messages[0].text;
-      this.postMsg(message);
+       this.postMsg(message);
+
 
       Dialogflow_V2.requestQuery(
         message,
