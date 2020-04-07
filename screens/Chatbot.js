@@ -6,7 +6,8 @@ import { dialogflowConfig } from '../env';
 import { withFirebaseHOC } from '../config/Firebase'
 import { MaterialCommunityIcons } from 'react-native-vector-icons';
 import { Icon } from 'react-native-elements'
-
+import * as Permissions from 'expo-permissions';
+import axios from "axios";
 
 console.disableYellowBox=true;
  const BOT_USER = {
@@ -19,20 +20,40 @@ console.disableYellowBox=true;
   class Chatbot extends Component {
     state = {
 
-      messages: [
-       //  {
-       //   _id: 1,
-       //   text: 'Hi  this is escapism feel free talk to me i am here to help',
-       //   createdAt: new Date(),
-       //   user: BOT_USER
-       // }
-      ],
+      messages: [],
       userDetails: [],
       //is_picking_video: false,
 
 
     };
+    postMsg = async (msg) => {
 
+const form = new FormData()
+  form.append('api_key', 'slMrROo1PbxnRejhauzT2UU2oCWR0MWWgxRG4wgmPMc')
+  form.append('text', msg)
+  form.append('lang_code', 'en')
+
+    axios({
+      "method": "POST",
+      "url": "https://apis.paralleldots.com/v5/emotion",
+      "headers": {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      "data": form,
+      "params":form,
+
+
+    })
+      .then(function(response) {
+        let emoObject = response.data.emotion;
+        let emo = Object.keys(emoObject).reduce((a, b) => emoObject[a] > emoObject[b] ? a : b);
+        console.log("emoition ==",emo);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+
+    };
     componentDidMount() {
 
        this.fetchUserChat(),
@@ -74,13 +95,14 @@ console.disableYellowBox=true;
         messages: GiftedChat.append(previousState.messages, messages)
       }));
       let message = messages[0].text;
+      this.postMsg(message);
+
       Dialogflow_V2.requestQuery(
         message,
         result => this.handleGoogleResponse(result),
         error => console.log(error)
       );
       let msg  = messages[0];
-
        await this.props.firebase.pushMessage(msg);
 
     };
@@ -97,7 +119,8 @@ console.disableYellowBox=true;
        await this.props.firebase.pushMessage(msg);
 
     };
-    Camerashow = () => {
+    Camerashow = async () => {
+    await Permissions.askAsync(Permissions.CAMERA_ROLL, Permissions.CAMERA);
     this.props.navigation.navigate('Camera')
   };
     renderCustomActions = () => {
