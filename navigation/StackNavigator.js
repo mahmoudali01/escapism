@@ -7,7 +7,7 @@ import Chatbot from '../screens/Chatbot';
 import MTracker from '../screens/MTracker';
 import Status from '../screens/Status';
 import Recommend from '../screens/Recommend';
- import MyCam  from '../screens/camera';
+import MyCam  from '../screens/camera';
 
 export const HomeNavigator = createAppContainer(
   createStackNavigator({
@@ -55,5 +55,16 @@ export const ProfileNavigator = createAppContainer(
     EditAvatar: {
       screen: EditAvatar
     }
+  })
+)
+export const CameraNavigator = createAppContainer(
+  createStackNavigator({
+    Camera: {
+      screen: MyCam
+    },
+    Home: {
+      screen: Chatbot
+    },
+
   })
 )

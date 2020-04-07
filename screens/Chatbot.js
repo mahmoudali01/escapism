@@ -77,8 +77,8 @@ console.disableYellowBox=true;
      }).then((response) => {
         let emoObject = response.data.emotion;
         var emoition = Object.keys(emoObject).reduce((a, b) => emoObject[a] > emoObject[b] ? a : b);
-        this.props.firebase.saveEmo(emoition);
-         console.log(emoition);
+        console.log(emoition);
+       this.props.firebase.saveEmo(emoition);
     }).catch((err) => {
      console.log("ERROR: ====", err);
    });

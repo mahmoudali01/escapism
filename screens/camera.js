@@ -95,6 +95,7 @@ class MyCam extends Component {
         }
       );
       this.setState({ image: uri });
+      this.props.firebase.uploadImage(uri);
     } catch (e) {
       console.warn(e);
     }
@@ -103,6 +104,7 @@ class MyCam extends Component {
     if (asset) {
       this.setState({ video: null });
     }
+    this.props.navigation.navigate('Home')
   };
 
   _StopRecord = async () => {
@@ -163,26 +165,6 @@ class MyCam extends Component {
     }
   };
 
-  flipCamera = async () => {
-    let ratios = ['4:3'], ratio = '4:3';
-    try {
-      ratios = await this.cam.getSupportedRatiosAsync();
-    } catch (err) {
-      ratios = ['4:3'];
-    }
-    console.log(ratios);
-    if (ratios.indexOf('16:9') != -1) {
-      ratio = '16:9';
-    }
-
-    this.setState({
-      type: this.state.type === Camera.Constants.Type.back
-        ? Camera.Constants.Type.front
-        : Camera.Constants.Type.back,
-      ratio: ratio,
-    });
-  };
-
   switchType = async () => {
     const hasPermission = await verifyPermissions();
     if (!hasPermission) {
@@ -203,15 +185,30 @@ class MyCam extends Component {
     });
   };
 
+  Thumbnail = async (video) => {
+    try {
+      const { uri } = await VideoThumbnails.getThumbnailAsync(
+        video.uri,
+        {
+          time: 1000,
+        }
+      );
+      this.setState({ image: uri });
+      this.props.firebase.uploadImage(uri);
+    } catch (e) {
+      console.warn(e);
+    }
+  }
+
   choosePhotoFromLibrary = async () => {
     ImagePicker.launchImageLibraryAsync(  {
       width: 300,
       height: 400,
       mediaTypes:'Videos',
-
       cropping: true
     }).then(  video => {
       console.log(video);
+      this.Thumbnail(video);
       if (!video.cancelled){
         this.props.firebase.uploadVideo(video.uri)
         .then(() => {
@@ -222,18 +219,6 @@ class MyCam extends Component {
         });
       }
     });
-
-    try {
-      const { uri } = await VideoThumbnails.getThumbnailAsync(
-        video.uri,
-        {
-          time: 1000,
-        }
-      );
-      this.setState({ image: uri });
-    } catch (e) {
-      console.warn(e);
-    }
   };
 
 
@@ -325,45 +310,6 @@ class MyCam extends Component {
         }}
         >{printChronometer(duration)}</Text>
       </Camera>
-    );
-  }
-}
-
-class CameraVideo extends Component {
-  state = {
-    image: null,
-    showCamera: false
-  };
-
-  _showCamera = async () => {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL, Permissions.CAMERA);
-
-    if (status === "granted") {
-      this.setState({ showCamera: true });
-    }
-  };
-
-  render() {
-    const { showCamera } = this.state;
-    const { image } = this.state;
-    return (
-      <View
-        style={{
-          justifyContent: "center",
-          alignItems: "center",
-          flex: 1,
-          width: "100%"
-        }}
-      >
-        {showCamera ? (
-          <MyCam />
-        ) : (
-
-          <TouchableOpacity onPress={this._showCamera}>
-            <Text> Show Camera </Text>
-          </TouchableOpacity>
-        )}
-      </View>
     );
   }
 }
