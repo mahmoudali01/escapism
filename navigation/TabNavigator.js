@@ -3,10 +3,6 @@ import { createAppContainer } from 'react-navigation'
 import { createBottomTabNavigator } from 'react-navigation-tabs'
 import { MaterialCommunityIcons } from 'react-native-vector-icons';
  import {  ProfileNavigator ,HomeNavigator ,StatusNavigator ,RecommendNavigator ,TrackerNavigator } from './StackNavigator'
-// import Chatbot from '../screens/Chatbot';
-// import MTracker from '../screens/MTracker';
-// import Status from '../screens/Status';
-// import Recommend from '../screens/Recommend';
 
 const TabNavigator = createBottomTabNavigator(
   {
@@ -71,7 +67,7 @@ const TabNavigator = createBottomTabNavigator(
     }
   },
   {
-    initialRouteName: 'Home',
+    initialRouteName: 'Profile',
 
     tabBarOptions: {
       showLabel: true,

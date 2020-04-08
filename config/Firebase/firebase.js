@@ -23,16 +23,29 @@ const Firebase = {
     return firebase.auth().sendPasswordResetEmail(email)
   },
   createNewUser: userData =>{
+    var ref =firebase.database().ref('users/' + `${userData.uid}`);
+
     const BOT_USER = {
        _id: 2,
        name: 'escapism bot',
      };
-    var ref =firebase.database().ref('users/' + `${userData.uid}`);
+
+
     ref.set(userData).then((data)=>{
         console.log('data ' , data)
     }).catch((error)=>{
         console.log('error ' , error)
-    })
+    });
+    ref.child("text").set({
+        textEmo: {
+     sad: 1,
+     angry: 1,
+     happy:1,
+     fear :1,
+     excited:1,
+     indifferent:1
+   }
+     });
     var ts = firebase.database.ServerValue.TIMESTAMP;
    var name =userData.name;
    const msg=
@@ -40,8 +53,11 @@ const Firebase = {
      text: `hi ${userData.name} this is escapism we are here for you feel free talk to me`,
      createdAt: ts,
      user: BOT_USER,
-   }
-     return ref.child('chat').push(msg);
+   };
+
+
+    return ref.child('chat').push(msg);
+
 
 },
 
@@ -106,8 +122,8 @@ pushMessage: message  =>{
      let user = firebase.auth().currentUser;
      var userid= user.uid;
       var ts = firebase.database.ServerValue.TIMESTAMP;
-      var ref = firebase.database().ref('users/' + `${userid}`).child('chat');
-     ref.push(
+      var ref = firebase.database().ref('users/' + `${userid}`);
+     ref.child('chat').push(
        {
          _id:message._id,
          text: message.text,
@@ -118,6 +134,7 @@ pushMessage: message  =>{
      }).catch((error)=>{
          console.log('error ' , error)
      })
+
     },
 
     uploadVideo: async (uri) => {
@@ -190,26 +207,57 @@ pushMessage: message  =>{
     var ref = firebase.database().ref('users/' + `${userid}` ).child("text");
     ref.push(text);
  },
-
+ maxEmo: (emoitions) => {
+   let emotionss = emoitions;
+      let emoition = Object.keys(emotionss).reduce((a, b) => emotionss[a] > emotionss[b] ? a : b);
+      firebase.database().ref('textEmo').set(emoition)
+},
  saveEmo: async (emo) => {
+   let user = firebase.auth().currentUser
+     var userid= user.uid;
+     var ref = firebase.database().ref('users/' + `${userid}`).child("text");
+  ref.child("textEmo").transaction((data) => {
+       if(data) {
+         switch(emo) {
+         case "sad":
+           if(data.sad) {
+               data.sad++;}
+           break;
+           case "happy":
+           if(data.happy) {
+               data.happy++;}
+            break;
 
-       let ref = firebase.database().ref('textEmo');
-       ref.transaction((data) => {
-        if(data) {
-            if(data.sad) {
-                data.sad++;
-            }
-            if(data.happy) {
-                data.happy++;
-            }
-        }
+            case "angry":
+              if(data.angry) {
+                  data.angry++;}
+              break;
+              case "fear":
+              if(data.fear) {
+                  data.fear++;}
+               break;
 
-        return data;
-   })
-   .then(console.log('Done'))
-   .catch((error) => console.log(error));
+               case "excited":
+                 if(data.excited) {
+                     data.excited++;}
+                 break;
+                 case "indifferent":
+                 if(data.indifferent) {
+                     data.indifferent++;}
+                  break;
 
-    },
+          }
+
+       }
+       let emotions = data;
+       let emoition = Object.keys(emotions).reduce((a, b) => emotions[a] > emotions[b] ? a : b);
+       firebase.database().ref('textEmo').set(emoition);
+       return data;
+
+  })
+  .then(console.log('Done'))
+  .catch((error) => console.log(error));
+ },
 
     }
 

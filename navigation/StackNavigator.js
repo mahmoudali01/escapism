@@ -57,14 +57,3 @@ export const ProfileNavigator = createAppContainer(
     }
   })
 )
-export const CameraNavigator = createAppContainer(
-  createStackNavigator({
-    Camera: {
-      screen: MyCam
-    },
-    Home: {
-      screen: Chatbot
-    },
-
-  })
-)
