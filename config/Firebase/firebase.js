@@ -36,7 +36,7 @@ const Firebase = {
     }).catch((error)=>{
         console.log('error ' , error)
     });
-    ref.child("text").set({
+    ref.child("emo").set({
         textEmo: {
      sad: 1,
      angry: 1,
@@ -44,7 +44,9 @@ const Firebase = {
      fear :1,
      excited:1,
      indifferent:1
-   }
+   },
+   textEmoFinal:0,
+   videoEmo:0,
      });
     var ts = firebase.database.ServerValue.TIMESTAMP;
    var name =userData.name;
@@ -123,7 +125,7 @@ pushMessage: message  =>{
      var userid= user.uid;
       var ts = firebase.database.ServerValue.TIMESTAMP;
       var ref = firebase.database().ref('users/' + `${userid}`);
-     ref.child('chat').push(
+     return ref.child('chat').push(
        {
          _id:message._id,
          text: message.text,
@@ -204,19 +206,15 @@ pushMessage: message  =>{
   textApi: (text) => {
   let user = firebase.auth().currentUser
     var userid= user.uid;
-    var ref = firebase.database().ref('users/' + `${userid}` ).child("text");
+    var ref = firebase.database().ref('users/' + `${userid}` ).child("emo");
     ref.push(text);
  },
- maxEmo: (emoitions) => {
-   let emotionss = emoitions;
-      let emoition = Object.keys(emotionss).reduce((a, b) => emotionss[a] > emotionss[b] ? a : b);
-      firebase.database().ref('textEmo').set(emoition)
-},
+
  saveEmo: async (emo) => {
    let user = firebase.auth().currentUser
      var userid= user.uid;
-     var ref = firebase.database().ref('users/' + `${userid}`).child("text");
-  ref.child("textEmo").transaction((data) => {
+     var ref = firebase.database().ref('users/' + `${userid}`).child("emo");
+  return ref.child("textEmo").transaction((data) => {
        if(data) {
          switch(emo) {
          case "sad":
@@ -252,6 +250,7 @@ pushMessage: message  =>{
        let emotions = data;
        let emoition = Object.keys(emotions).reduce((a, b) => emotions[a] > emotions[b] ? a : b);
        firebase.database().ref('textEmo').set(emoition);
+       // ref.child("textEmoFinal").set(emoition);
        return data;
 
   })
