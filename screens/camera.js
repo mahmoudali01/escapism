@@ -11,12 +11,13 @@ import MediaMeta from 'react-native-media-meta';
 import _ from 'lodash';
 import Constants from 'expo-constants';
 import { withFirebaseHOC } from '../config/Firebase';
+import * as FaceDetector from 'expo-face-detector';
 
 
-YellowBox.ignoreWarnings(['Setting a timer']);
+YellowBox.ignoreWarnings(['Setting a timer','FirebaseStorageError']);
 const _console = _.clone(console);
 console.warn = message => {
-  if (message.indexOf('Setting a timer') <= -1) {
+  if (message.indexOf('Setting a timer','FirebaseStorageError') <= -1) {
     _console.warn(message);
   }
 };
@@ -48,6 +49,7 @@ class MyCam extends Component {
     duration: 0,
     allowsEditing: true,
     image: null,
+    faceDetected: false,
     recording: false
   };
 
@@ -69,6 +71,27 @@ class MyCam extends Component {
     }
   }
 
+  mode = async (array) =>{
+    if(array.length == 0)
+        return null;
+    var modeMap = {};
+    var maxEl = array[0], maxCount = 1;
+    for(var i = 0; i < array.length; i++)
+    {
+        var el = array[i];
+        if(modeMap[el] == null)
+            modeMap[el] = 1;
+        else
+            modeMap[el]++;
+        if(modeMap[el] > maxCount)
+        {
+            maxEl = el;
+            maxCount = modeMap[el];
+        }
+    }
+    return maxEl;
+}
+
   _saveVideo = async () => {
     const { video } = this.state;
     const asset = await MediaLibrary.createAssetAsync(video.uri);
@@ -76,6 +99,8 @@ class MyCam extends Component {
     if (!hasPermission) {
         return;
     }
+
+    this.Thumbnail(video);
 
     if (!asset.cancelled){
       this.props.firebase.uploadVideo(video.uri)
@@ -87,18 +112,6 @@ class MyCam extends Component {
       });
     }
 
-    try {
-      const { uri } = await VideoThumbnails.getThumbnailAsync(
-        video.uri,
-        {
-          time: 1000,
-        }
-      );
-      this.setState({ image: uri });
-      this.props.firebase.uploadImage(uri);
-    } catch (e) {
-      console.warn(e);
-    }
 
 
     if (asset) {
@@ -106,6 +119,55 @@ class MyCam extends Component {
     }
     this.props.navigation.navigate('Home')
   };
+
+  Thumbnail = async (video) => {
+    try {
+      const thumb = []
+      for (i=0 , j=0 ; i<=10000 ; i=i+1000 , j++){
+      const { uri } = await VideoThumbnails.getThumbnailAsync(
+        video.uri,
+        {
+          time: 1000,
+        }
+      );
+      this.setState({ image: uri})
+      const source = await this.props.firebase.uploadImage(uri);
+      const axios = require("axios");
+        axios({
+          "method":"POST",
+          "url":"https://luxand-cloud-face-recognition.p.rapidapi.com/photo/emotions",
+          "headers":{
+          "content-type":"application/x-www-form-urlencoded",
+          "x-rapidapi-host":"luxand-cloud-face-recognition.p.rapidapi.com",
+          "x-rapidapi-key":"cc81abd375msh1b00401b78cef11p11f09fjsn6fb16a44c153"
+          },"params":{
+          "photo":source
+          },"data":{
+
+          }
+          })
+          .then((response)=>{
+            //const selection = ["disgust","sadness", "anger","happiness","contempt","surprise","neutral"]
+            const emotion = response.data.faces[0].emotions
+            /*for (i=0;i<=selection.length;i++){
+              if(emotion[selection[i]]>=0.5) {
+              console.log(selection[i])
+              }
+            }*/
+            var emoition = Object.keys(emotion).reduce((a, b) => emotion[a] > emotion[b] ? a : b);
+            thumb[j] = emoition
+            //console.log(emoition)
+          })
+          .catch((error)=>{
+            console.log(error)
+          })
+      }
+      const first = await this.mode(thumb)
+      console.log(first)
+    } catch (e) {
+      console.warn(e);
+    }
+  }
 
   _StopRecord = async () => {
     const hasPermission = await verifyPermissions();
@@ -119,7 +181,7 @@ class MyCam extends Component {
 
   _StartRecord = async () => {
     const hasPermission = await verifyPermissions();
-    const { duration } = this.state;
+    this.setState({ duration : 0 });
     if (!hasPermission) {
         return;
     }
@@ -183,22 +245,8 @@ class MyCam extends Component {
         ...this.state,
         type: newType,
     });
+    this.setState({ duration : 0 });
   };
-
-  Thumbnail = async (video) => {
-    try {
-      const { uri } = await VideoThumbnails.getThumbnailAsync(
-        video.uri,
-        {
-          time: 1000,
-        }
-      );
-      this.setState({ image: uri });
-      this.props.firebase.uploadImage(uri);
-    } catch (e) {
-      console.warn(e);
-    }
-  }
 
   choosePhotoFromLibrary = async () => {
     ImagePicker.launchImageLibraryAsync(  {
@@ -221,9 +269,25 @@ class MyCam extends Component {
     });
   };
 
+  handleFacesDetected = ({ faces }) => {
+    if (faces.length === 1){
+      this.setState({
+        faceDetected: true,
+      });
+      /*if (!this.state.faceDetected && !this.state.countDownStarted){
+        this.initCountDown();
+      }*/
+
+    } else {
+      this.setState({faceDetected: false });
+      this.setState({ duration : 0 });
+      //this.cancelCountDown();
+    }
+  }
+
 
   render() {
-    const { recording, video, duration } = this.state;
+    const { recording, video, duration, faceDetected } = this.state;
     const { image } = this.state;
     return (
       <Camera
@@ -235,6 +299,14 @@ class MyCam extends Component {
           width: "100%"
         }}
         type={this.state.type}
+        onFacesDetected={this.handleFacesDetected}
+        faceDetectorSettings={{
+          mode: FaceDetector.Constants.Mode.fast,
+          detectLandmarks: FaceDetector.Constants.Landmarks.none,
+          runClassifications: FaceDetector.Constants.Classifications.none,
+          minDetectionInterval: 100,
+          tracking: true,
+        }}
       >
         {video && (
           <TouchableOpacity
@@ -249,14 +321,21 @@ class MyCam extends Component {
           </TouchableOpacity>
         )}
 
-        <Text
-        style={{
-          padding: 20,
-          width: "45%",
-          backgroundColor: "#fff"
-        }}
-        >Generate thumbnail</Text>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: 'transparent',
+            flexDirection: 'row',
+            position: 'absolute',
+            top: 20,
+          }}>
+            <Text
+              style={styles.textStandard}>
+              {this.state.faceDetected ? 'Face Detected' : 'No Face Detected'}
+            </Text>
+        </View>
 
+        {faceDetected && (
         <TouchableOpacity
           onPress={this.toogleRecord}
           style={{
@@ -270,13 +349,8 @@ class MyCam extends Component {
             {recording ? "Stop" : "Record"}
           </Text>
         </TouchableOpacity>
+        )}
 
-        {image && <Image onPress={this._saveVideo} source={{ uri: image }} style={{
-          width: 200,
-          height: 200,
-          marginBottom: -78,
-          }}
-          />}
         <TouchableOpacity
             onPress={()=>this.switchType()}
             style={{
@@ -291,6 +365,8 @@ class MyCam extends Component {
                 style={{ color: "#fff", fontSize: 40}}
             />
         </TouchableOpacity>
+
+        {faceDetected && (
         <TouchableOpacity onPress={this.choosePhotoFromLibrary}
             style={{
               alignSelf: 'flex-end',
@@ -301,6 +377,9 @@ class MyCam extends Component {
             >
             <MaterialCommunityIcons name="camera-burst" style={{ color: "#fff", fontSize: 40}}/>
         </TouchableOpacity>
+        )}
+
+        {faceDetected && (
         <Text
         style={{
           alignSelf: 'flex-start',
@@ -309,9 +388,18 @@ class MyCam extends Component {
           backgroundColor: "#fff"
         }}
         >{printChronometer(duration)}</Text>
+        )}
+
       </Camera>
     );
   }
 }
+const styles = StyleSheet.create({
+  textStandard: {
+    fontSize: 18,
+    marginBottom: 10,
+    color: 'white'
+  }
+});
 
 export default withFirebaseHOC(MyCam);

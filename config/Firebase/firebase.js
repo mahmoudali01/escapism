@@ -140,68 +140,43 @@ pushMessage: message  =>{
     },
 
     uploadVideo: async (uri) => {
-    let user = firebase.auth().currentUser
-    var userid= user.uid;
-    const response = await fetch(uri);
-    const blob = await response.blob();
-    const reader = new FileReader();
-    reader.readAsDataURL(blob);
-    reader.onloadend = () => {
-      let base64 = reader.result;
-    };
-    var name="123"+Date.now();
-    var ref = firebase.storage().ref("videos/" + name).child(`${userid}`);
-    const result2 = await ref.put(blob)
-    const downloadURL = await result2.ref.getDownloadURL();
-    console.log(downloadURL);
-    return result2;
-  },
-
-  uploadImage: async (Image) => {
-    let user = firebase.auth().currentUser
-    const response = await fetch(Image);
-    const blob = await response.blob();
-    const reader = new FileReader();
-    reader.readAsDataURL(blob);
-    reader.onloadend = () => {
-      let base64 = reader.result;
-      //console.log(base64);
-    };
-    var name="123"+Date.now();
-    var ref = firebase.storage().ref().child("userPic/" + name);
-    const snapshot = await ref.put(blob);
-    var image = await snapshot.ref.getDownloadURL();
-    console.log(image);
-    const axios = require("axios");
-        axios({
-          "method":"POST",
-          "url":"https://luxand-cloud-face-recognition.p.rapidapi.com/photo/emotions",
-          "headers":{
-          "content-type":"application/x-www-form-urlencoded",
-          "x-rapidapi-host":"luxand-cloud-face-recognition.p.rapidapi.com",
-          "x-rapidapi-key":"cc81abd375msh1b00401b78cef11p11f09fjsn6fb16a44c153"
-          },"params":{
-          "photo":image
-          },"data":{
-
-          }
-          })
-          .then((response)=>{
-            const selection = ["disgust","sadness", "anger","happiness","contempt","surprise","neutral"]
-            const emotion = response.data.faces[0].emotions
-            for (i=0;i<=selection.length;i++){
-              if(emotion[selection[i]]>=0.5)
-              console.log(selection[i])
-              //this.textApi(selection[i])
-            }
-          })
-          .catch((error)=>{
-            console.log(error)
-          })
-    //var ref = firebase.database().ref('users/').child(name);
-    return image;
-    //ref.off();
+      let user = firebase.auth().currentUser
+      var userid= user.uid;
+      const response = await fetch(uri);
+      const blob = await response.blob();
+      const reader = new FileReader();
+      reader.readAsDataURL(blob);
+      reader.onloadend = () => {
+        let base64 = reader.result;
+      };
+      var name="123"+Date.now();
+      var ref = firebase.storage().ref("videos/" + name).child(`${userid}`);
+      const result2 = await ref.put(blob)
+      const downloadURL = await result2.ref.getDownloadURL();
+      console.log(downloadURL);
+      return result2;
     },
+
+    uploadImage: async (Image) => {
+      const response = await fetch(Image);
+      const blob = await response.blob();
+      const reader = new FileReader();
+      reader.readAsDataURL(blob);
+      reader.onloadend = () => {
+        let base64 = reader.result;
+        //console.log(base64);
+      };
+      var name="123"+Date.now();
+      var ref = firebase.storage().ref().child("userPic/" + name);
+      const snapshot = await ref.put(blob);
+      var image = await snapshot.ref.getDownloadURL();
+      //console.log(image)
+
+      //var ref = firebase.database().ref('users/').child(name);
+      return image
+      //ref.off();
+    },
+
 
   textApi: (text) => {
   let user = firebase.auth().currentUser
