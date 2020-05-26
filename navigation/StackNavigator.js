@@ -8,6 +8,7 @@ import MTracker from '../screens/MTracker';
 import Status from '../screens/Status';
 import Recommend from '../screens/Recommend';
 import MyCam  from '../screens/camera';
+import Activityoption  from '../screens/Activityoption';
 
 export const HomeNavigator = createAppContainer(
   createStackNavigator({
@@ -43,6 +44,9 @@ export const TrackerNavigator = createAppContainer(
   createStackNavigator({
     moodTracker: {
       screen: MTracker
+    },
+    Activityoption: {
+      screen: Activityoption
     },
 
   })

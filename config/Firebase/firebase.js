@@ -45,7 +45,7 @@ const Firebase = {
      excited:1,
      indifferent:1
    },
-   textEmoFinal:0,
+   textEmo:0,
    videoEmo:0,
      });
     var ts = firebase.database.ServerValue.TIMESTAMP;
@@ -232,6 +232,24 @@ pushMessage: message  =>{
   .then(console.log('Done'))
   .catch((error) => console.log(error));
  },
+ _showdata: async () => {
+   let arrdata = []
+    firebase.database().ref('Entry/').on('value', (snapshot) =>{
+      arrdata = snapshot.val().selectedItems
+    })
+    return arrdata;
+  },
+
+  _saveoption: async (options) => {
+    //this.setState({ options}, () => console.warn('Selected Activities: ', options))
+    console.log(options);
+    firebase.database().ref('/options').set({
+      options
+    });
+    firebase.database().ref('options/').once('value', function (snapshot) {
+      console.log(snapshot.val().options)
+  });
+  },
 
     }
 
