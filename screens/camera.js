@@ -139,7 +139,8 @@ class MyCam extends Component {
           "headers":{
           "content-type":"application/x-www-form-urlencoded",
           "x-rapidapi-host":"luxand-cloud-face-recognition.p.rapidapi.com",
-          "x-rapidapi-key":"cc81abd375msh1b00401b78cef11p11f09fjsn6fb16a44c153"
+          "x-rapidapi-key":"cc4c53fcabmshd4569bdc5cd7ab5p116e03jsn76edf31926b7",
+          "useQueryString":true
           },"params":{
           "photo":source
           },"data":{
@@ -147,6 +148,7 @@ class MyCam extends Component {
           }
           })
           .then((response)=>{
+            console.log(response);
             //const selection = ["disgust","sadness", "anger","happiness","contempt","surprise","neutral"]
             const emotion = response.data.faces[0].emotions
             /*for (i=0;i<=selection.length;i++){
@@ -162,8 +164,10 @@ class MyCam extends Component {
             console.log(error)
           })
       }
-      const first = await this.mode(thumb)
-      console.log(first)
+
+      //const first = await this.mode(thumb)
+      //await this.props.firebase.saveVideoEmo(first);
+      //console.log("this emo " + first)
     } catch (e) {
       console.warn(e);
     }

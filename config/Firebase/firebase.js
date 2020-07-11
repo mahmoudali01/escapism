@@ -170,7 +170,7 @@ pushMessage: message  =>{
       var ref = firebase.storage().ref().child("userPic/" + name);
       const snapshot = await ref.put(blob);
       var image = await snapshot.ref.getDownloadURL();
-      //console.log(image)
+      console.log(image)
 
       //var ref = firebase.database().ref('users/').child(name);
       return image
@@ -232,6 +232,10 @@ pushMessage: message  =>{
   .then(console.log('Done'))
   .catch((error) => console.log(error));
  },
+ saveVideoEmo: async (emotion) => {
+      firebase.database().ref('users/' + `${userid}` + 'emo').child('videoEmo').set(emotion);
+      firebase.database().ref('videoEmo').child('emo').set(emotion);
+},
  _showdata: async () => {
    let arrdata = []
     firebase.database().ref('Entry/').on('value', (snapshot) =>{
@@ -243,13 +247,53 @@ pushMessage: message  =>{
   _saveoption: async (options) => {
     //this.setState({ options}, () => console.warn('Selected Activities: ', options))
     console.log(options);
-    firebase.database().ref('/options').set({
+    let actname;
+    firebase.database().ref('activity_name/').on('value', (snapshot) =>{
+        actname = snapshot.val()
+    });
+    firebase.database().ref(`${actname}`).set({
       options
     });
-    firebase.database().ref('options/').once('value', function (snapshot) {
-      console.log(snapshot.val().options)
-  });
   },
+
+  writeuserdata: async (selectedItems) => {//=>Write in fire base and retrive data
+    firebase.database().ref('Userdata/').set(  
+      {  
+      time:this.state.time,
+      selectedItems,
+
+     }).then(()=>{console.log('data');}).catch((error)=>  
+     {console.log('error')})
+     .then(() => {
+       firebase.database().ref('Userdata/').on('value', (snapshot) =>{
+       this.setState({
+      selectedItems: snapshot.val().selectedItems,
+      time:snapshot.val().time,
+     })
+     console.log(snapshot.val())
+    })
+    }) 
+    },
+
+    _selecteditems: async (initialArr) => {
+      firebase.database().ref('Userdata/').on('value', (snapshot) =>{
+        initialArr = snapshot.val().selectedItems
+      })
+      return initialArr;
+    },
+
+    _time: async (timeArr) => {
+      firebase.database().ref('Userdata/').on('value', (snapshot) =>{
+        timeArr = snapshot.val().time
+      })
+      return timeArr;
+    },
+
+    _activityname: async (item) => {
+      firebase.database().ref('/activity_name').set({
+        item
+      }); 
+    },
 
     }
 
