@@ -252,7 +252,7 @@ pushMessage: message  =>{
  },
  saveVideoEmo: async (emotion) => {
       firebase.database().ref('users/' + `${userid}` + 'emo').child('videoEmo').set(emotion);
-      firebase.database().ref('videoEmo').child('emo').set(emotion);
+      firebase.database().ref('userEmo').child('emo').set(emotion);
 },
  _showdata: async () => {
    let arrdata = []
@@ -275,12 +275,12 @@ pushMessage: message  =>{
   },
 
   writeuserdata: async (selectedItems) => {//=>Write in fire base and retrive data
-    firebase.database().ref('Userdata/').set(  
-      {  
+    firebase.database().ref('Userdata/').set(
+      {
       time:this.state.time,
       selectedItems,
 
-     }).then(()=>{console.log('data');}).catch((error)=>  
+     }).then(()=>{console.log('data');}).catch((error)=>
      {console.log('error')})
      .then(() => {
        firebase.database().ref('Userdata/').on('value', (snapshot) =>{
@@ -290,7 +290,7 @@ pushMessage: message  =>{
      })
      console.log(snapshot.val())
     })
-    }) 
+    })
     },
 
     _selecteditems: async (initialArr) => {
@@ -310,7 +310,7 @@ pushMessage: message  =>{
     _activityname: async (item) => {
       firebase.database().ref('/activity_name').set({
         item
-      }); 
+      });
     },
 
     }
