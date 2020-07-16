@@ -148,7 +148,7 @@ class MyCam extends Component {
           }
           })
           .then((response)=>{
-            console.log(response);
+            
             //const selection = ["disgust","sadness", "anger","happiness","contempt","surprise","neutral"]
             const emotion = response.data.faces[0].emotions
             /*for (i=0;i<=selection.length;i++){
@@ -165,9 +165,9 @@ class MyCam extends Component {
           })
       }
 
-      //const first = await this.mode(thumb)
-      //await this.props.firebase.saveVideoEmo(first);
-      //console.log("this emo " + first)
+      const first = await this.mode(thumb)
+      await this.props.firebase.saveVideoEmo(first);
+      console.log("this emo " + first)
     } catch (e) {
       console.warn(e);
     }
