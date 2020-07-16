@@ -19,8 +19,34 @@ console.disableYellowBox=true;
 
   class Chatbot extends Component {
     state = {
-
       messages: [],
+
+     /* messages: [
+        {
+        _id: 1,
+        text: '`Hi! I am the ESCAPISM bot 🤖.\n\n AM here to help you feel better`',
+        createdAt: new Date(),
+        user: BOT_USER ,
+        quickReplies: {
+          type: 'radio', // or 'checkbox',
+          keepIt: true,
+          values: [
+            {
+              title: '😋 hi escapism',
+              //value: 'yes',
+            },
+            {
+              title: 'nice to meet you!',
+              //value: 'yes_picture',
+            },
+            {
+              title: 'hi there',
+              //value: 'no',
+            },
+          ],
+        }
+      }
+      ],*/
       userDetails: [],
       //is_picking_video: false,
 
@@ -86,8 +112,31 @@ console.disableYellowBox=true;
     };
 
     handleGoogleResponse(result) {
-      let text  = result.queryResult.fulfillmentMessages[0].text.text[0];
-      this.sendBotResponse(text);
+      let inlineEditorText = result.queryResult.fulfillmentMessages[0].text.text[0];
+      let dafultIntentText = result.queryResult.fulfillmentText;
+      let text ;
+      if (inlineEditorText==undefined)
+      {
+        text = dafultIntentText;
+      }
+      else
+      {
+        text=inlineEditorText;
+      }
+      //let quickText =result.queryResult.fulfillmentMessages[1].suggestions.suggestions;
+      let quickTextString =result.queryResult.fulfillmentMessages[1].quickReplies.quickReplies;
+      let i;
+      let quickText =[];
+      for (i = 0; i < quickTextString.length; i++) 
+        {
+          let obj =
+          {
+            title :quickTextString[i]
+          };
+          quickText.push(obj);
+        }
+      this.sendBotResponse(text,quickText);
+      //this.onQuickReply(replies);
     };
     onSend = async (messages = []) => {
       this.setState(previousState => ({
@@ -106,12 +155,51 @@ console.disableYellowBox=true;
        await this.props.firebase.pushMessage(msg);
 
     };
- sendBotResponse = async (text) => {
+    onQuickReply = replies => {
+      const createdAt = new Date()
+      if (replies.length === 1) {
+        this.onSend([
+          {
+            createdAt,
+            _id: Math.round(Math.random() * 1000000),
+            text: replies[0].title,
+            user: {
+              _id: 1,
+              name: 'FAQ Bot',
+              avatar: 'https://i.imgur.com/7k12EPD.png'
+            }
+          },
+        ])
+      } else if (replies.length > 1) {
+        this.onSend([
+          {
+            createdAt,
+            _id: Math.round(Math.random() * 1000000),
+            text: replies.map(reply => reply.title).join(', '),
+            user: {
+              _id: 2,
+              name: 'FAQ Bot',
+              avatar: 'https://i.imgur.com/7k12EPD.png'
+            }
+             
+          },
+        ])
+      } else {
+        console.warn('replies param is not set correctly')
+      }
+    }
+ sendBotResponse = async (text,quickText) => {
       let msg = {
         _id: this.state.messages.length + 1,
         text,
         createdAt: new Date(),
-        user: BOT_USER
+        user: BOT_USER,
+        quickReplies :{
+          type: 'radio', // or 'checkbox',
+          keepIt: true,
+          values:quickText,
+        }
+
       };
       this.setState(previousState => ({
         messages: GiftedChat.append(previousState.messages, [msg])
@@ -153,7 +241,9 @@ console.disableYellowBox=true;
             isTyping = 'true'
             placeholder = 'chat with me'
             messages={this.state.messages}
+            replies= {this.state.replies}
             onSend={messages => this.onSend(messages)}
+            onQuickReply={replies => this.onQuickReply(replies)}
             user={{
               _id: 1,
               createdAt: new Date(),

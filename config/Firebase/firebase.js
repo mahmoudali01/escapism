@@ -55,6 +55,24 @@ const Firebase = {
      text: `hi ${userData.name} this is escapism we are here for you feel free talk to me`,
      createdAt: ts,
      user: BOT_USER,
+     quickReplies: {
+      type: 'radio', // or 'checkbox',
+      keepIt: true,
+      values: [
+        {
+          title: '😋 hi escapism',
+          //value: 'yes',
+        },
+        {
+          title: 'nice to meet you!',
+          //value: 'yes_picture',
+        },
+        {
+          title: 'hi there',
+          //value: 'no',
+        },
+      ],
+    }
    };
 
 
