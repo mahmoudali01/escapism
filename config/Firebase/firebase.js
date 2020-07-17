@@ -37,7 +37,7 @@ const Firebase = {
         console.log('error ' , error)
     });
     ref.child("emo").set({
-        textEmo: {
+  textEmo: {
      sad: 1,
      angry: 1,
      happy:1,
@@ -45,7 +45,7 @@ const Firebase = {
      excited:1,
      indifferent:1
    },
-   textEmo:0,
+   textEmoo:0,
    videoEmo:0,
      });
     var ts = firebase.database.ServerValue.TIMESTAMP;
