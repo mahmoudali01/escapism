@@ -207,7 +207,8 @@ pushMessage: message  =>{
    let user = firebase.auth().currentUser
      var userid= user.uid;
      var ref = firebase.database().ref('users/' + `${userid}`).child("emo");
-  return ref.child("textEmo").transaction((data) => {
+     let emoition
+   ref.child("textEmo").transaction((data) => {
        if(data) {
          switch(emo) {
          case "sad":
@@ -240,15 +241,26 @@ pushMessage: message  =>{
           }
 
        }
+
        let emotions = data;
-       let emoition = Object.keys(emotions).reduce((a, b) => emotions[a] > emotions[b] ? a : b);
-       firebase.database().ref('textEmo').set(emoition);
-       // ref.child("textEmoFinal").set(emoition);
+       //let emoition = Object.keys(emotions).reduce((a, b) => emotions[a] > emotions[b] ? a : b);
+       emoition = Object.keys(emotions).reduce((a, b) => emotions[a] > emotions[b] ? a : b);
+       // let user = firebase.auth().currentUser
+       // var userid= user.uid;
+       firebase.database().ref('userEmo/' + 'textEmo').set(emoition);
+       // firebase.database().ref('users/' + `${userid}`).child('emo').child("textEmoo").push(emoition);
+
        return data;
 
   })
   .then(console.log('Done'))
   .catch((error) => console.log(error));
+
+  // firebase.database().ref('users/' + `${userid}`).child('emo').child('textEmoo').push({
+  //   emotion,
+  //   time,
+  // });
+  return firebase.database().ref('users/' + `${userid}`).child('emo').child("textEmoo").push({emoition});
  },
  saveVideoEmo: async (emotion,time) => {
   let user = firebase.auth().currentUser
