@@ -168,7 +168,7 @@ pushMessage: message  =>{
         let base64 = reader.result;
       };
       var name="123"+Date.now();
-      var ref = firebase.storage().ref("videos/" + name).child(`${userid}`);
+      var ref = firebase.storage().ref("videos/" + `${userid}`).child(name);
       const result2 = await ref.put(blob)
       const downloadURL = await result2.ref.getDownloadURL();
       console.log(downloadURL);
@@ -250,10 +250,16 @@ pushMessage: message  =>{
   .then(console.log('Done'))
   .catch((error) => console.log(error));
  },
- saveVideoEmo: async (emotion) => {
-      firebase.database().ref('users/' + `${userid}` + 'emo').child('videoEmo').set(emotion);
-      firebase.database().ref('userEmo').child('emo').set(emotion);
-},
+ saveVideoEmo: async (emotion,time) => {
+  let user = firebase.auth().currentUser
+  var userid= user.uid;
+  firebase.database().ref('users/' + `${userid}`).child('emo').child('videoEmo').push({
+    emotion,
+    time,
+  });
+  firebase.database().ref('userEmo/' + 'emo').set(emotion);
+  console.log("success")
+ },
  _showdata: async () => {
    let arrdata = []
     firebase.database().ref('Entry/').on('value', (snapshot) =>{
