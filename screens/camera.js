@@ -12,6 +12,7 @@ import _ from 'lodash';
 import Constants from 'expo-constants';
 import { withFirebaseHOC } from '../config/Firebase';
 import * as FaceDetector from 'expo-face-detector';
+import moment from 'moment';
 
 
 YellowBox.ignoreWarnings(['Setting a timer','FirebaseStorageError']);
@@ -50,7 +51,8 @@ class MyCam extends Component {
     allowsEditing: true,
     image: null,
     faceDetected: false,
-    recording: false
+    recording: false,
+    time: '',
   };
 
   registerRecord = async () => {
@@ -139,8 +141,7 @@ class MyCam extends Component {
           "headers":{
           "content-type":"application/x-www-form-urlencoded",
           "x-rapidapi-host":"luxand-cloud-face-recognition.p.rapidapi.com",
-          "x-rapidapi-key":"cc4c53fcabmshd4569bdc5cd7ab5p116e03jsn76edf31926b7",
-          "useQueryString":true
+          "x-rapidapi-key":"cc4c53fcabmshd4569bdc5cd7ab5p116e03jsn76edf31926b7"
           },"params":{
           "photo":source
           },"data":{
@@ -148,7 +149,6 @@ class MyCam extends Component {
           }
           })
           .then((response)=>{
-            
             //const selection = ["disgust","sadness", "anger","happiness","contempt","surprise","neutral"]
             const emotion = response.data.faces[0].emotions
             /*for (i=0;i<=selection.length;i++){
@@ -164,13 +164,23 @@ class MyCam extends Component {
             console.log(error)
           })
       }
-
       const first = await this.mode(thumb)
-      await this.props.firebase.saveVideoEmo(first);
+      
       console.log("this emo " + first)
+      await this.props.firebase.saveVideoEmo(first,this.state.time);
     } catch (e) {
       console.warn(e);
     }
+  }
+
+  componentDidMount() {
+    //Getting the current date-time with required formate and UTC   
+    var date = moment()
+      .utcOffset('+02:00')
+      .format('YYYY-MM-DD hh:mm:ss a');
+  
+    this.setState({ time: date });
+    //Settign up time to show
   }
 
   _StopRecord = async () => {
