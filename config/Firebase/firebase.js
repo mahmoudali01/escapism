@@ -45,8 +45,7 @@ const Firebase = {
      excited:1,
      indifferent:1
    },
-   textEmoo:0,
-   videoEmo:0,
+   
      });
     var ts = firebase.database.ServerValue.TIMESTAMP;
    var name =userData.name;
@@ -243,12 +242,9 @@ pushMessage: message  =>{
        }
 
        let emotions = data;
-       //let emoition = Object.keys(emotions).reduce((a, b) => emotions[a] > emotions[b] ? a : b);
        emoition = Object.keys(emotions).reduce((a, b) => emotions[a] > emotions[b] ? a : b);
-       // let user = firebase.auth().currentUser
-       // var userid= user.uid;
+
        firebase.database().ref('userEmo/' + 'textEmo').set(emoition);
-       // firebase.database().ref('users/' + `${userid}`).child('emo').child("textEmoo").push(emoition);
 
        return data;
 
@@ -256,10 +252,7 @@ pushMessage: message  =>{
   .then(console.log('Done'))
   .catch((error) => console.log(error));
 
-  // firebase.database().ref('users/' + `${userid}`).child('emo').child('textEmoo').push({
-  //   emotion,
-  //   time,
-  // });
+
   return ref.child("textEmoo").push({emoition});
  },
  saveVideoEmo: async (emotion,time) => {
