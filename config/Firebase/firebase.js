@@ -196,12 +196,12 @@ pushMessage: message  =>{
     },
 
 
-  textApi: (text) => {
-  let user = firebase.auth().currentUser
-    var userid= user.uid;
-    var ref = firebase.database().ref('users/' + `${userid}` ).child("emo");
-    ref.push(text);
- },
+ //  textApi: (text) => {
+ //  let user = firebase.auth().currentUser
+ //    var userid= user.uid;
+ //    var ref = firebase.database().ref('users/' + `${userid}` ).child("emo");
+ //    ref.push(text);
+ // },
 
  saveEmo: async (emo) => {
    let user = firebase.auth().currentUser
@@ -260,7 +260,7 @@ pushMessage: message  =>{
   //   emotion,
   //   time,
   // });
-  return firebase.database().ref('users/' + `${userid}`).child('emo').child("textEmoo").push({emoition});
+  return ref.child("textEmoo").push({emoition});
  },
  saveVideoEmo: async (emotion,time) => {
   let user = firebase.auth().currentUser
