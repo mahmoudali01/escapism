@@ -29,7 +29,7 @@ const Firebase = {
        _id: 2,
        name: 'escapism bot',
      };
-
+    var arr=[ 'walking','running', 'swimming','playMusic','listenTOmusic','hangouts','studying','videoGames']
 
     ref.set(userData).then((data)=>{
         console.log('data ' , data)
@@ -37,26 +37,16 @@ const Firebase = {
         console.log('error ' , error)
     });
     ref.child("emo").set({
-  textEmo: {
+    textEmo: {
      sad: 1,
      angry: 1,
      happy:1,
      fear :1,
      excited:1,
      indifferent:1
-   },
-   activity:{
-     0:'walking',
-     1:'running',
-     2:'swimming',
-     3:'playMusic',
-     4:'listenTOmusic',
-     5:'hangouts',
-     6:'studying',
-     7:'videoGames'
-   }
-
+     }
      });
+
     var ts = firebase.database.ServerValue.TIMESTAMP;
    var name =userData.name;
    const msg=
@@ -84,7 +74,7 @@ const Firebase = {
     }
    };
 
-
+   ref.child('activity').set(arr);
     return ref.child('chat').push(msg);
 
 
