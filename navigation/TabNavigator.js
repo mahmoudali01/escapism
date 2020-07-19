@@ -2,7 +2,8 @@ import React from 'react'
 import { createAppContainer } from 'react-navigation'
 import { createBottomTabNavigator } from 'react-navigation-tabs'
 import { MaterialCommunityIcons } from 'react-native-vector-icons';
- import {  ProfileNavigator ,HomeNavigator ,StatusNavigator ,RecommendNavigator ,TrackerNavigator } from './StackNavigator'
+ // import {  ProfileNavigator ,HomeNavigator ,StatusNavigator ,RecommendNavigator ,TrackerNavigator } from './StackNavigator'
+ import {  ProfileNavigator ,HomeNavigator ,StatusNavigator,TrackerNavigator } from './StackNavigator'
 
 const TabNavigator = createBottomTabNavigator(
   {
@@ -17,17 +18,17 @@ const TabNavigator = createBottomTabNavigator(
         )
       }
     },
-    Recommend: {
-      screen: RecommendNavigator,
-      navigationOptions: {
-        title: 'Recommend',
-        tabBarLabel:'Recommend' ,
-
-        tabBarIcon: ({ color , size }) => (
-        <MaterialCommunityIcons name="bell" color={color} size={25} />
-        )
-      }
-    },
+    // Recommend: {
+    //   screen: RecommendNavigator,
+    //   navigationOptions: {
+    //     title: 'Recommend',
+    //     tabBarLabel:'Recommend' ,
+    //
+    //     tabBarIcon: ({ color , size }) => (
+    //     <MaterialCommunityIcons name="bell" color={color} size={25} />
+    //     )
+    //   }
+    // },
     MTracker: {
       screen: TrackerNavigator,
       navigationOptions: {

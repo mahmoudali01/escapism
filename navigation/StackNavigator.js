@@ -6,7 +6,7 @@ import EditAvatar from '../screens/EditAvatar'
 import Chatbot from '../screens/Chatbot';
 import MTracker from '../screens/MTracker';
 import Status from '../screens/Status';
-import Recommend from '../screens/Recommend';
+// import Recommend from '../screens/Recommend';
 import MyCam  from '../screens/camera';
 import Activityoption  from '../screens/Activityoption';
 import Activity  from '../screens/Activity';
@@ -36,14 +36,14 @@ export const StatusNavigator = createAppContainer(
   })
 )
 
-export const RecommendNavigator = createAppContainer(
-  createStackNavigator({
-    Recommendations: {
-      screen: Recommend
-    },
-
-  })
-)
+// export const RecommendNavigator = createAppContainer(
+//   createStackNavigator({
+//     Recommendations: {
+//       screen: Recommend
+//     },
+//
+//   })
+// )
 
 export const TrackerNavigator = createAppContainer(
   createStackNavigator({
