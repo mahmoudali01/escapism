@@ -45,7 +45,17 @@ const Firebase = {
      excited:1,
      indifferent:1
    },
-   
+   activity:{
+     0:'walking',
+     1:'running',
+     2:'swimming',
+     3:'playMusic',
+     4:'listenTOmusic',
+     5:'hangouts',
+     6:'studying',
+     7:'videoGames'
+   }
+
      });
     var ts = firebase.database.ServerValue.TIMESTAMP;
    var name =userData.name;
@@ -211,30 +221,48 @@ pushMessage: message  =>{
        if(data) {
          switch(emo) {
          case "sad":
-           if(data.sad) {
+           if(data.sad !== null && data.sad < 5) {
                data.sad++;}
+               else if (data.sad > 4 ) {
+                  data.sad = 2;
+               }
            break;
            case "happy":
-           if(data.happy) {
+           if(data.happy !== null && data.happy < 5 ) {
                data.happy++;}
+           else if (data.happy > 4 ) {
+              data.happy = 2;
+           }
             break;
 
             case "angry":
-              if(data.angry) {
+              if(data.angry !== null && data.angry < 5) {
                   data.angry++;}
+                  else if (data.angry > 4 ) {
+                     data.angry = 2;
+                  }
               break;
               case "fear":
-              if(data.fear) {
+              if(data.fear !== null && data.fear < 5) {
                   data.fear++;}
+                  else if (data.fear > 4 ) {
+                     data.fear = 2;
+                  }
                break;
 
                case "excited":
-                 if(data.excited) {
+                 if(data.excited !== null && data.excited < 5) {
                      data.excited++;}
+                     else if (data.excited > 4 ) {
+                        data.excited = 2;
+                     }
                  break;
                  case "indifferent":
-                 if(data.indifferent) {
+                 if(data.indifferent !== null && data.indifferent < 5) {
                      data.indifferent++;}
+                     else if (data.indifferent > 4 ) {
+                        data.indifferent = 2;
+                     }
                   break;
 
           }
@@ -253,7 +281,7 @@ pushMessage: message  =>{
   .catch((error) => console.log(error));
 
 
-  return ref.child("textEmoo").push({emoition});
+  //return ref.child("textEmoo").push({emoition});
  },
  saveVideoEmo: async (emotion,time) => {
   let user = firebase.auth().currentUser
