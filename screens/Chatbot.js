@@ -124,10 +124,12 @@ console.disableYellowBox=true;
       );
       let msg  = messages[0];
        await this.props.firebase.pushMessage(msg);
-      
+
 
     };
     onQuickReply = replies => {
+      const { userDetails , messages } = this.state
+
       const createdAt = new Date()
       if (replies.length === 1) {
         this.onSend([
@@ -137,8 +139,10 @@ console.disableYellowBox=true;
             text: replies[0].title,
             user: {
               _id: 1,
-              name: 'FAQ Bot',
-              avatar: 'https://i.imgur.com/7k12EPD.png'
+              // name: 'FAQ Bot',
+              // avatar: 'https://i.imgur.com/7k12EPD.png'
+              name: userDetails[0],
+              avatar: userDetails[2],
             }
           },
         ])
@@ -149,9 +153,11 @@ console.disableYellowBox=true;
             _id: Math.round(Math.random() * 1000000),
             text: replies.map(reply => reply.title).join(', '),
             user: {
-              _id: 2,
-              name: 'FAQ Bot',
-              avatar: 'https://i.imgur.com/7k12EPD.png'
+              _id: 1,
+              // name: 'FAQ Bot',
+              // avatar: 'https://i.imgur.com/7k12EPD.png',
+              name: userDetails[0],
+              avatar: userDetails[2],
             }
 
           },
