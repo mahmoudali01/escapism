@@ -20,35 +20,7 @@ console.disableYellowBox=true;
   class Chatbot extends Component {
     state = {
       messages: [],
-
-     /* messages: [
-        {
-        _id: 1,
-        text: '`Hi! I am the ESCAPISM bot 🤖.\n\n AM here to help you feel better`',
-        createdAt: new Date(),
-        user: BOT_USER ,
-        quickReplies: {
-          type: 'radio', // or 'checkbox',
-          keepIt: true,
-          values: [
-            {
-              title: '😋 hi escapism',
-              //value: 'yes',
-            },
-            {
-              title: 'nice to meet you!',
-              //value: 'yes_picture',
-            },
-            {
-              title: 'hi there',
-              //value: 'no',
-            },
-          ],
-        }
-      }
-      ],*/
       userDetails: [],
-      //is_picking_video: false,
 
 
     };
@@ -127,7 +99,7 @@ console.disableYellowBox=true;
       let quickTextString =result.queryResult.fulfillmentMessages[1].quickReplies.quickReplies;
       let i;
       let quickText =[];
-      for (i = 0; i < quickTextString.length; i++) 
+      for (i = 0; i < quickTextString.length; i++)
         {
           let obj =
           {
@@ -145,7 +117,6 @@ console.disableYellowBox=true;
       let message = messages[0].text;
        this.postMsg(message);
 
-
       Dialogflow_V2.requestQuery(
         message,
         result => this.handleGoogleResponse(result),
@@ -153,6 +124,7 @@ console.disableYellowBox=true;
       );
       let msg  = messages[0];
        await this.props.firebase.pushMessage(msg);
+      
 
     };
     onQuickReply = replies => {
@@ -181,7 +153,7 @@ console.disableYellowBox=true;
               name: 'FAQ Bot',
               avatar: 'https://i.imgur.com/7k12EPD.png'
             }
-             
+
           },
         ])
       } else {
