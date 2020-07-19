@@ -82,7 +82,7 @@ console.disableYellowBox=true;
    });
 
     };
-
+//nkcwkjjbw
     handleGoogleResponse(result) {
       let inlineEditorText = result.queryResult.fulfillmentMessages[0].text.text[0];
       let dafultIntentText = result.queryResult.fulfillmentText;
