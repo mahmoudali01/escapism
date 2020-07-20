@@ -28,6 +28,7 @@ console.disableYellowBox=true;
     componentDidMount() {
        this.fetchUserChat(),
       this.fetchUserDetails(),
+      this.fetchStatus(),
       Dialogflow_V2.setConfiguration(
         dialogflowConfig.client_email,
         dialogflowConfig.private_key,
@@ -45,12 +46,21 @@ console.disableYellowBox=true;
         console.log(error)
        }
     };
+    fetchStatus = async () => {
+      try {
+           var userStatus = await this.props.firebase.fetchStatus();
+           this.setState({ userStatus })
+           console.log('USER status ===========>>', userStatus)
+         } catch (error) {
+        console.log(error)
+       }
+    };
 
     fetchUserChat = async () => {
       try {
            var messages = await this.props.firebase.fetchChat();
            this.setState({ messages})
-           console.log('USER chat ===========>>', messages)
+          // console.log('USER chat ===========>>', messages)
          } catch (error) {
         console.log(error)
        }
@@ -82,7 +92,7 @@ console.disableYellowBox=true;
    });
 
     };
-//nkcwkjjbw
+
     handleGoogleResponse(result) {
       let inlineEditorText = result.queryResult.fulfillmentMessages[0].text.text[0];
       let dafultIntentText = result.queryResult.fulfillmentText;
@@ -124,6 +134,8 @@ console.disableYellowBox=true;
       );
       let msg  = messages[0];
        await this.props.firebase.pushMessage(msg);
+       await this.props.firebase.statusLog(msg);
+
 
 
     };
@@ -183,6 +195,8 @@ console.disableYellowBox=true;
         messages: GiftedChat.append(previousState.messages, [msg])
       }));
        await this.props.firebase.pushMessage(msg);
+       await this.props.firebase.statusLog(msg);
+
 
     };
     Camerashow = async () => {

@@ -23,7 +23,7 @@ class Profile extends Component {
      try {
           var userDetails = await this.props.firebase.getUserDetails();
           this.setState({ userDetails })
-          console.log('USER DETAILS ===========>>', userDetails)
+        //  console.log('USER DETAILS ===========>>', userDetails)
         } catch (error) {
        console.log(error)
       }

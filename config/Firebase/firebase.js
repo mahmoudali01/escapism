@@ -1,6 +1,8 @@
 import * as firebase from 'firebase'
 import 'firebase/auth'
 import firebaseConfig from './firebaseConfig'
+import moment from 'moment';
+
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig); }
 
@@ -155,6 +157,45 @@ pushMessage: message  =>{
      })
 
     },
+    statusLog: message =>{
+      var date = moment().utcOffset('+02:00').format('YYYY-MM-DD');
+         let user = firebase.auth().currentUser;
+         var userid= user.uid;
+          var ts = firebase.database.ServerValue.TIMESTAMP;
+          var ref = firebase.database().ref('users/' + `${userid}`).child('status').child(`${date}`);
+         return ref.child('chatLog').push(
+           {
+             _id:message._id,
+             text: message.text,
+             createdAt: ts,
+             user:message.user
+           }
+         ).then((data)=>{
+         }).catch((error)=>{
+             console.log('error ' , error)
+         })
+
+        },
+        fetchStatus: () =>{
+          let user = firebase.auth().currentUser
+            var userid= user.uid;
+            if(user){
+            var ref = firebase.database().ref('users/' + `${userid}`).child('status');
+              return ref.once('value').then((snapshot) => {
+            const statusObject = snapshot.val();
+
+
+          //  let chatList = Object.keys(chatObject).map(key => ({
+          //   ...chatObject[key],
+          // }));
+
+
+             return statusObject;
+            }).catch(function(error) {
+              console.log( error)
+            })
+          }
+            },
 
     uploadVideo: async (uri) => {
       let user = firebase.auth().currentUser
@@ -203,6 +244,8 @@ pushMessage: message  =>{
  // },
 
  saveEmo: async (emo) => {
+   var date = moment().utcOffset('+02:00').format('YYYY-MM-DD');
+
    let user = firebase.auth().currentUser
      var userid= user.uid;
      var ref = firebase.database().ref('users/' + `${userid}`).child("emo");
@@ -271,7 +314,7 @@ pushMessage: message  =>{
   .catch((error) => console.log(error));
 
 
-  //return ref.child("textEmoo").push({emoition});
+  return firebase.database().ref('users/' + `${userid}`).child("status").child(`${date}`).push(emoition);
  },
  saveVideoEmo: async (emotion,time) => {
   let user = firebase.auth().currentUser
@@ -341,7 +384,7 @@ pushMessage: message  =>{
         item
       });
     },
-  
+
 
     }
 
