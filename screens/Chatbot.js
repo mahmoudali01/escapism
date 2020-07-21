@@ -139,6 +139,8 @@ console.disableYellowBox=true;
 
       const createdAt = new Date()
       if (replies.length === 1) {
+
+
         this.onSend([
           {
             createdAt,
@@ -153,6 +155,8 @@ console.disableYellowBox=true;
             }
           },
         ])
+        var reply = replies[0].title;
+        this.postMsg(reply);
       } else if (replies.length > 1) {
         this.onSend([
           {
@@ -169,6 +173,8 @@ console.disableYellowBox=true;
 
           },
         ])
+        var reply = replies[0].title;
+        this.postMsg(reply);
       } else {
         console.warn('replies param is not set correctly')
       }

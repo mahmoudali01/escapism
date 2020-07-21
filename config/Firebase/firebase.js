@@ -78,7 +78,7 @@ const Firebase = {
     }
    };
    var date = moment().utcOffset('+02:00').format('DD-MM-YYYY');
-   ref.child('activity').set(arr);
+   ref.child('activitynames').child('activity').set(arr);
    firebase.database().ref('users/' + `${userData.uid}`).child('welcomeMsg').push(msg);
    return firebase.database().ref('users/' + `${userData.uid}`).child('status').child('statusChat').child(`${date}`).push(msg);
 
@@ -357,21 +357,13 @@ pushMessage: message  =>{
   .catch((error) => console.log(error));
 
 
-  return firebase.database().ref('users/' + `${userid}`).child('status').child("statusEmo").child(`${date}`).set({
-    emo:emoition,
-    date:date
-  });
+  // return firebase.database().ref('users/' + `${userid}`).child('status').child("statusEmo").child(`${date}`).set({
+  //   emo:emoition,
+  //   date:date
+  // });
+  return firebase.database().ref('users/' + `${userid}`).child('emo').child("textEmo").child(`${date}`).push(emoition);
  },
- saveVideoEmo: async (emotion,time) => {
-  let user = firebase.auth().currentUser
-  var userid= user.uid;
-  firebase.database().ref('users/' + `${userid}`).child('emo').child('videoEmo').push({
-    emotion,
-    time,
-  });
-  firebase.database().ref('userEmo/' + 'emo').set(emotion);
-  console.log("success")
- },
+
  _showdata: async () => {
    let arrdata = []
     firebase.database().ref('Entry/').on('value', (snapshot) =>{
