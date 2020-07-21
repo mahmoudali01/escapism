@@ -5,7 +5,7 @@ import { withFirebaseHOC } from '../config/Firebase'
 import { GiftedChat  } from 'react-native-gifted-chat';
 console.disableYellowBox=true;
 
-class copyChat extends Component {
+class Conversation extends Component {
   state = {
 
    statusChat: [],
@@ -35,7 +35,7 @@ class copyChat extends Component {
     const { statusChat, userDetails  } = this.state
 
     return (
-      <View style={{ flex: 1, backgroundColor: '#FBF0D2' }}>
+      <View style={{ flex: 1 }}>
          <GiftedChat
             showUserAvatar = 'true'
             isTyping = {false}
@@ -59,4 +59,4 @@ class copyChat extends Component {
 }
 }
 
-export default withFirebaseHOC(copyChat)
+export default withFirebaseHOC(Conversation)

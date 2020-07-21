@@ -10,7 +10,7 @@ import Status from '../screens/Status';
 import MyCam  from '../screens/camera';
 import Activityoption  from '../screens/Activityoption';
 import Activity  from '../screens/Activity';
-import copyChat from '../screens/copyChat'
+import Conversation from '../screens/copyChat'
 
 export const HomeNavigator = createAppContainer(
   createStackNavigator({
@@ -29,8 +29,8 @@ export const StatusNavigator = createAppContainer(
     Status: {
       screen: Status
     },
-    copyChat: {
-      screen: copyChat
+    Conversation: {
+      screen: Conversation
     },
 
   })

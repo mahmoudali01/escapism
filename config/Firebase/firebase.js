@@ -86,6 +86,24 @@ const Firebase = {
 
 },
 
+// getUserDetails: () => {
+//    let user = firebase.auth().currentUser
+//      var userid= user.uid;
+//      var ref = firebase.database().ref('users/').child(`${userid}`);
+//
+//        return ref.once('value').then((snapshot) => {
+//        var name = snapshot.child("name").val();
+//        var email = snapshot.child("email").val();
+//        var uri = snapshot.child("avatar").val();
+//        var uid = snapshot.child("uid").val();
+//
+//
+//        var arr =[name,email,uri,uid];
+//        return arr;
+//      }).catch(function(error) {
+//        console.log( error)
+//      })
+//  },
 getUserDetails: () => {
    let user = firebase.auth().currentUser
      var userid= user.uid;

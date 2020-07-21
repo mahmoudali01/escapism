@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View,TouchableOpacity ,Dimensions,FlatList,ScrollView } from 'react-native';
+import { StyleSheet, Text, View,TouchableOpacity ,Dimensions,FlatList,ScrollView,ActivityIndicator } from 'react-native';
 import moment from "moment";
 import { withFirebaseHOC } from '../config/Firebase'
 import axios from "axios"
@@ -11,8 +11,8 @@ console.disableYellowBox=true;
 
 
     state = {
-    //  userStatus: [],
-      statusEmo:null
+      //list: [],
+      statusEmo:[]
     };
 
     componentDidMount() {
@@ -50,6 +50,9 @@ console.disableYellowBox=true;
       const {  statusEmo } = this.state
 
       const list = statusEmo;
+      if (this.state.statusEmo != null) {
+      //  if (this.state.list != null) {
+
        return (
          <ScrollView>
 
@@ -60,7 +63,7 @@ console.disableYellowBox=true;
       // onPress={this.handlecopyChatNavigation}
       //onPress={this.handlecopyChatNavigation}
       onPress={() => {
-    this.props.navigation.navigate('copyChat',{date:l.date});
+    this.props.navigation.navigate('Conversation',{date:l.date});
    }}
       >
      <ListItem
@@ -77,7 +80,13 @@ console.disableYellowBox=true;
 </View>
  </ScrollView>
 
-        );
+);}else
+      return (
+        <View
+          style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <Text>no status yet!</Text>
+        </View>
+      )
    }
   }
 
@@ -94,8 +103,8 @@ container:{
   marginBottom:20,
   width:380,
   borderRadius:20,
-  marginLeft: 20,
-  paddingLeft: 10,
+  marginLeft: 17,
+  //paddingLeft: 10,
 
 
 },
