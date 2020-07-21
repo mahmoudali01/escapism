@@ -144,7 +144,7 @@ getUserDetails: () => {
          var userid= user.uid;
          if(user){
          var ref = firebase.database().ref('users/' + `${userid}`).child('welcomeMsg');
-           return ref.once('value').then((snapshot) => {
+        return ref.once('value').then((snapshot) => {
          const chatObject = snapshot.val();
 
 
@@ -361,7 +361,7 @@ pushMessage: message  =>{
   //   emo:emoition,
   //   date:date
   // });
-  return firebase.database().ref('users/' + `${userid}`).child('emo').child("textEmo").child(`${date}`).push(emoition);
+  return firebase.database().ref('users/' + `${userid}`).child('emo').child("textEmoo").child(`${date}`).push(emoition);
  },
 
  _showdata: async () => {
