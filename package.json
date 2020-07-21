@@ -61,6 +61,7 @@
     "react-native-safe-area-context": "^0.7.3",
     "react-native-screens": "^2.4.0",
     "react-native-svg": "^12.0.3",
+    "react-native-touchable-scale": "^2.1.1",
     "react-native-ui-kitten": "^4.4.1",
     "react-native-vector-icons": "^6.6.0",
     "react-native-voice": "^0.3.0",

@@ -30,6 +30,8 @@ const Firebase = {
     const BOT_USER = {
        _id: 2,
        name: 'escapism bot',
+       avatar: 'https://i.imgur.com/7k12EPD.png'
+
      };
     var arr=[ 'walking','running', 'swimming','playMusic','listenTOmusic','hangouts','studying','videoGames']
 
@@ -75,9 +77,11 @@ const Firebase = {
       ],
     }
    };
-
+   var date = moment().utcOffset('+02:00').format('DD-MM-YYYY');
    ref.child('activity').set(arr);
-    return ref.child('chat').push(msg);
+   firebase.database().ref('users/' + `${userData.uid}`).child('welcomeMsg').push(msg);
+   return firebase.database().ref('users/' + `${userData.uid}`).child('status').child('statusChat').child(`${date}`).push(msg);
+
 
 
 },
@@ -121,7 +125,7 @@ getUserDetails: () => {
        let user = firebase.auth().currentUser
          var userid= user.uid;
          if(user){
-         var ref = firebase.database().ref('users/' + `${userid}`).child('chat');
+         var ref = firebase.database().ref('users/' + `${userid}`).child('welcomeMsg');
            return ref.once('value').then((snapshot) => {
          const chatObject = snapshot.val();
 
@@ -158,12 +162,12 @@ pushMessage: message  =>{
 
     },
     statusLog: message =>{
-      var date = moment().utcOffset('+02:00').format('YYYY-MM-DD');
+      var date = moment().utcOffset('+02:00').format('DD-MM-YYYY');
          let user = firebase.auth().currentUser;
          var userid= user.uid;
           var ts = firebase.database.ServerValue.TIMESTAMP;
-          var ref = firebase.database().ref('users/' + `${userid}`).child('status').child(`${date}`);
-         return ref.child('chatLog').push(
+          var ref = firebase.database().ref('users/' + `${userid}`).child('status').child('statusChat').child(`${date}`);
+         return ref.push(
            {
              _id:message._id,
              text: message.text,
@@ -176,26 +180,47 @@ pushMessage: message  =>{
          })
 
         },
-        fetchStatus: () =>{
+        fetchStatusChat: (date) =>{
           let user = firebase.auth().currentUser
             var userid= user.uid;
             if(user){
-            var ref = firebase.database().ref('users/' + `${userid}`).child('status');
-              return ref.once('value').then((snapshot) => {
-            const statusObject = snapshot.val();
+            var ref = firebase.database().ref('users/' + `${userid}`).child('status').child('statusChat').child(`${date}`);
+            return ref.once('value').then((snapshot) => {
+          const statusChatObject = snapshot.val();
 
 
-          //  let chatList = Object.keys(chatObject).map(key => ({
-          //   ...chatObject[key],
-          // }));
+         let chatList = Object.keys(statusChatObject).map(key => ({
+          ...statusChatObject[key],
+        }));
 
 
-             return statusObject;
-            }).catch(function(error) {
-              console.log( error)
-            })
-          }
+           return chatList.reverse();
+          }).catch(function(error) {
+            console.log( error)
+          })
+        }
             },
+
+            fetchStatusEmo: () =>{
+              let user = firebase.auth().currentUser
+                var userid= user.uid;
+                if(user){
+                var ref = firebase.database().ref('users/' + `${userid}`).child('status').child('statusEmo');
+                  return ref.once('value').then((snapshot) => {
+                const statusEmoObject = snapshot.val();
+
+
+               let statusEmoList = Object.keys(statusEmoObject).map(key => ({
+                ...statusEmoObject[key],
+              }));
+
+
+                 return statusEmoList;
+                }).catch(function(error) {
+                  console.log( error)
+                })
+              }
+                },
 
     uploadVideo: async (uri) => {
       let user = firebase.auth().currentUser
@@ -244,7 +269,7 @@ pushMessage: message  =>{
  // },
 
  saveEmo: async (emo) => {
-   var date = moment().utcOffset('+02:00').format('YYYY-MM-DD');
+   var date = moment().utcOffset('+02:00').format('DD-MM-YYYY');
 
    let user = firebase.auth().currentUser
      var userid= user.uid;
@@ -314,7 +339,10 @@ pushMessage: message  =>{
   .catch((error) => console.log(error));
 
 
-  return firebase.database().ref('users/' + `${userid}`).child("status").child(`${date}`).push(emoition);
+  return firebase.database().ref('users/' + `${userid}`).child('status').child("statusEmo").child(`${date}`).set({
+    emo:emoition,
+    date:date
+  });
  },
  saveVideoEmo: async (emotion,time) => {
   let user = firebase.auth().currentUser

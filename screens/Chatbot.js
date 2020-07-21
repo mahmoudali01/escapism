@@ -13,7 +13,7 @@ console.disableYellowBox=true;
  const BOT_USER = {
     _id: 2,
     name: 'escapism bot',
-    //avatar: 'https://i.imgur.com/7k12EPD.png'
+    avatar: 'https://i.imgur.com/7k12EPD.png'
   };
 
 
@@ -21,14 +21,13 @@ console.disableYellowBox=true;
     state = {
       messages: [],
       userDetails: [],
-
+      // isRefreshing: false
 
     };
 
     componentDidMount() {
        this.fetchUserChat(),
       this.fetchUserDetails(),
-      this.fetchStatus(),
       Dialogflow_V2.setConfiguration(
         dialogflowConfig.client_email,
         dialogflowConfig.private_key,
@@ -46,15 +45,7 @@ console.disableYellowBox=true;
         console.log(error)
        }
     };
-    fetchStatus = async () => {
-      try {
-           var userStatus = await this.props.firebase.fetchStatus();
-           this.setState({ userStatus })
-           console.log('USER status ===========>>', userStatus)
-         } catch (error) {
-        console.log(error)
-       }
-    };
+
 
     fetchUserChat = async () => {
       try {
@@ -65,6 +56,10 @@ console.disableYellowBox=true;
         console.log(error)
        }
     };
+ //    onRefresh = () => {
+ //   this.setState({ isRefreshing: true });
+ //   this.fetchUserChat();
+ // };
 
     postMsg = async (msg) => {
 
@@ -133,7 +128,7 @@ console.disableYellowBox=true;
         error => console.log(error)
       );
       let msg  = messages[0];
-       await this.props.firebase.pushMessage(msg);
+    //   await this.props.firebase.pushMessage(msg);
        await this.props.firebase.statusLog(msg);
 
 
@@ -194,7 +189,7 @@ console.disableYellowBox=true;
       this.setState(previousState => ({
         messages: GiftedChat.append(previousState.messages, [msg])
       }));
-       await this.props.firebase.pushMessage(msg);
+       //await this.props.firebase.pushMessage(msg);
        await this.props.firebase.statusLog(msg);
 
 

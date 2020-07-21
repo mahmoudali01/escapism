@@ -7,35 +7,39 @@ console.disableYellowBox=true;
 
 class copyChat extends Component {
   state = {
- 
-    messages: [],
-    userDetails: [],
+
+   statusChat: [],
+   userDetails: [],
+
   };
 
   componentDidMount(){
-    this.fetchUserChat();
+    this.fetchStatusChat();
   }
 
-  fetchUserChat = async () => {
+  fetchStatusChat = async () => {
     try {
-         var messages = await this.props.firebase.fetchChat();
-         this.setState({ messages});
-         console.log("gonna test here");
-         //console.log( messages[0].text)
+       var date =  this.props.navigation.state.params.date;
+       console.log("status Chat Date---------->>",date)
+
+         var statusChat = await this.props.firebase.fetchStatusChat(date);
+         this.setState({ statusChat});
+         console.log(statusChat)
        } catch (error) {
       console.log(error)
-    } 
+    }
     };
-   
-     
+
+
   render(){
-    const { userDetails , messages } = this.state
-    
+    const { statusChat, userDetails  } = this.state
+
     return (
       <View style={{ flex: 1, backgroundColor: '#FBF0D2' }}>
-         <GiftedChat 
-          isTyping = {false}
-            messages={this.state.messages}
+         <GiftedChat
+            showUserAvatar = 'true'
+            isTyping = {false}
+            messages={this.state.statusChat}
             minComposerHeight={0}
             maxComposerHeight={0}
             minInputToolbarHeight={0}
