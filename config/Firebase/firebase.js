@@ -50,13 +50,13 @@ const Firebase = {
      indifferent:1
      }
      });
-
-    var ts = firebase.database.ServerValue.TIMESTAMP;
+   //
+   //  var ts = firebase.database.ServerValue.TIMESTAMP;
    var name =userData.name;
    const msg=
    { _id:1,
      text: `hi ${userData.name} this is escapism we are here for you feel free talk to me`,
-     createdAt: ts,
+    // createdAt: ts,
      user: BOT_USER,
      quickReplies: {
       type: 'radio', // or 'checkbox',
@@ -363,7 +363,29 @@ pushMessage: message  =>{
   // });
   return firebase.database().ref('users/' + `${userid}`).child('emo').child("textEmoo").child(`${date}`).push(emoition);
  },
+ textEmoLog: ()=> {
+   let user = firebase.auth().currentUser
+     var userid= user.uid;
+     var date = moment().utcOffset('+02:00').format('DD-MM-YYYY');
 
+     if(user){
+     var ref = firebase.database().ref('users/' + `${userid}`).child('emo').child("textEmoo").child(`${date}`);
+    return ref.once('value').then((snapshot) => {
+     const textObject = snapshot.val();
+
+
+    let textList = Object.keys(textObject).map(key => ({
+     ...textObject[key],
+   }));
+
+
+      return chatList;
+     }).catch(function(error) {
+       console.log( error)
+     })
+   }
+
+},
  _showdata: async () => {
    let arrdata = []
     firebase.database().ref('Entry/').on('value', (snapshot) =>{
