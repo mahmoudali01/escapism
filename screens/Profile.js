@@ -59,7 +59,7 @@ class Profile extends Component {
                   >
                     <Text>Edit Profile</Text>
                   </TouchableOpacity>
-                
+
                   <TouchableOpacity style={styles.buttonContainer}
                   onPress={this.handleSignout}
                   >

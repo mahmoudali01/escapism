@@ -240,45 +240,6 @@ pushMessage: message  =>{
               }
                 },
 
-    uploadVideo: async (uri) => {
-      let user = firebase.auth().currentUser
-      var userid= user.uid;
-      const response = await fetch(uri);
-      const blob = await response.blob();
-      const reader = new FileReader();
-      reader.readAsDataURL(blob);
-      reader.onloadend = () => {
-        let base64 = reader.result;
-      };
-      var name="123"+Date.now();
-      var ref = firebase.storage().ref("videos/" + `${userid}`).child(name);
-      const result2 = await ref.put(blob)
-      const downloadURL = await result2.ref.getDownloadURL();
-      console.log(downloadURL);
-      return result2;
-    },
-
-    uploadImage: async (Image) => {
-      const response = await fetch(Image);
-      const blob = await response.blob();
-      const reader = new FileReader();
-      reader.readAsDataURL(blob);
-      reader.onloadend = () => {
-        let base64 = reader.result;
-        //console.log(base64);
-      };
-      var name="123"+Date.now();
-      var ref = firebase.storage().ref().child("userPic/" + name);
-      const snapshot = await ref.put(blob);
-      var image = await snapshot.ref.getDownloadURL();
-      console.log(image)
-
-      //var ref = firebase.database().ref('users/').child(name);
-      return image
-      //ref.off();
-    },
-
-
  //  textApi: (text) => {
  //  let user = firebase.auth().currentUser
  //    var userid= user.uid;
@@ -379,73 +340,220 @@ pushMessage: message  =>{
    }));
 
 
-      return chatList;
+      return textList;
      }).catch(function(error) {
        console.log( error)
      })
    }
 
 },
- _showdata: async () => {
-   let arrdata = []
-    firebase.database().ref('Entry/').on('value', (snapshot) =>{
-      arrdata = snapshot.val().selectedItems
-    })
-    return arrdata;
-  },
+ // _showdata: async () => {
+ //   let arrdata = []
+ //    firebase.database().ref('Entry/').on('value', (snapshot) =>{
+ //      arrdata = snapshot.val().selectedItems
+ //    })
+ //    return arrdata;
+ //  },
 
-  _saveoption: async (options) => {
-    //this.setState({ options}, () => console.warn('Selected Activities: ', options))
-    console.log(options);
-    let actname;
-    firebase.database().ref('activity_name/').on('value', (snapshot) =>{
-        actname = snapshot.val()
-    });
-    firebase.database().ref(`${actname}`).set({
-      options
-    });
-  },
 
-  writeuserdata: async (selectedItems) => {//=>Write in fire base and retrive data
-    firebase.database().ref('Userdata/').set(
-      {
-      time:this.state.time,
-      selectedItems,
+  // writeuserdata: async (selectedItems) => {//=>Write in fire base and retrive data
+  //   firebase.database().ref('Userdata/').set(
+  //     {
+  //     time:this.state.time,
+  //     selectedItems,
+  //
+  //    }).then(()=>{console.log('data');}).catch((error)=>
+  //    {console.log('error')})
+  //    .then(() => {
+  //      firebase.database().ref('Userdata/').on('value', (snapshot) =>{
+  //      this.setState({
+  //     selectedItems: snapshot.val().selectedItems,
+  //     time:snapshot.val().time,
+  //    })
+  //    console.log(snapshot.val())
+  //   })
+  //   })
+  //   },
 
-     }).then(()=>{console.log('data');}).catch((error)=>
-     {console.log('error')})
-     .then(() => {
-       firebase.database().ref('Userdata/').on('value', (snapshot) =>{
-       this.setState({
-      selectedItems: snapshot.val().selectedItems,
-      time:snapshot.val().time,
-     })
-     console.log(snapshot.val())
-    })
-    })
-    },
+    // _selecteditems: async (initialArr) => {
+    //   firebase.database().ref('Userdata/').on('value', (snapshot) =>{
+    //     initialArr = snapshot.val().selectedItems
+    //   })
+    //   return initialArr;
+    // },
 
-    _selecteditems: async (initialArr) => {
-      firebase.database().ref('Userdata/').on('value', (snapshot) =>{
-        initialArr = snapshot.val().selectedItems
-      })
-      return initialArr;
-    },
+    // _time: async (timeArr) => {
+    //   firebase.database().ref('Userdata/').on('value', (snapshot) =>{
+    //     timeArr = snapshot.val().time
+    //   })
+    //   return timeArr;
+    // },
 
-    _time: async (timeArr) => {
-      firebase.database().ref('Userdata/').on('value', (snapshot) =>{
-        timeArr = snapshot.val().time
-      })
-      return timeArr;
-    },
+    // _activityname: async (item) => {
+    //   firebase.database().ref('/activity_name').set({
+    //     item
+    //   });
+    // },
 
-    _activityname: async (item) => {
-      firebase.database().ref('/activity_name').set({
-        item
+    saveVideoEmo: async (emotion) => {
+      let user = firebase.auth().currentUser
+      var userid= user.uid;
+      var date = moment().utcOffset('+02:00').format('DD-MM-YYYY');
+      firebase.database().ref('users/' + `${userid}`).child('emo').child('videoEmo').push({
+        emotion,
+        date,
       });
-    },
+      firebase.database().ref('users/' + `${userid}`).child('status').child("statusEmo").child(`${date}`).set({
+        emo:emotion,
+        date:date
+      });
+
+      firebase.database().ref('userEmo/' + 'emo').set(emotion);
+     },
 
 
+    uploadVideo: async (uri) => {
+          let user = firebase.auth().currentUser
+          var userid= user.uid;
+          const response = await fetch(uri);
+          const blob = await response.blob();
+          const reader = new FileReader();
+          reader.readAsDataURL(blob);
+          reader.onloadend = () => {
+            let base64 = reader.result;
+          };
+          var name="123"+Date.now();
+          var ref = firebase.storage().ref("videos/" + `${userid}`).child(name);
+          const result2 = await ref.put(blob)
+          const downloadURL = await result2.ref.getDownloadURL();
+          console.log(downloadURL);
+          return result2;
+        },
+
+        uploadImage: async (Image) => {
+          const response = await fetch(Image);
+          const blob = await response.blob();
+          const reader = new FileReader();
+          reader.readAsDataURL(blob);
+          reader.onloadend = () => {
+            let base64 = reader.result;
+            //console.log(base64);
+          };
+          var name="123"+Date.now();
+          var ref = firebase.storage().ref().child("userPic/" + name);
+          const snapshot = await ref.put(blob);
+          var image = await snapshot.ref.getDownloadURL();
+          console.log(image)
+
+          //var ref = firebase.database().ref('users/').child(name);
+          return image
+          //ref.off();
+        },
+
+
+    _showdata: async () => {
+       let arrdata = []
+        firebase.database().ref('Entry/').on('value', (snapshot) =>{
+          arrdata = snapshot.val().selectedItems
+        })
+        return arrdata;
+      },
+
+
+    _saveoption: async (options, i) => {
+        //this.setState({ options}, () => console.warn('Selected Activities: ', options))
+        console.log(options);
+        let actname;
+        let user = firebase.auth().currentUser
+        var userid= user.uid;
+        firebase.database().ref('users/' + `${userid}`).child('optionactivity/').child('optionactivityname/').on('value', (snapshot) =>{
+            actname = snapshot.val().list
+        });
+        firebase.database().ref('users/' + `${userid}`).child('optionactivity/').child(`${actname[i]}`).set({
+          options
+        });
+      },
+
+
+    _callactivityname: async () => {
+          let actlist = [];
+          let user = firebase.auth().currentUser
+          var userid= user.uid;
+          firebase.database().ref('users/' + `${userid}`).child('activitynames').on('value', (snapshot) => {
+            actlist = snapshot.val().activity
+          });
+          console.log(actlist)
+          return actlist
+        },
+
+
+    _deleteactivityname: async (activity) => {
+          let user = firebase.auth().currentUser
+          var userid= user.uid;
+          firebase.database().ref('users/' + `${userid}`).child('activitynames').set({
+            activity
+          });
+        },
+
+        _addnewactivityname: async (activelist, newActivity) => {
+          let user = firebase.auth().currentUser
+          var userid= user.uid;
+          firebase.database().ref('users/' + `${userid}`).child('activitynames').on('value', (snapshot) => {
+            activelist = snapshot.val().activity
+          });
+          activelist[activelist.length]=newActivity
+          let activity = activelist
+          firebase.database().ref('users/' + `${userid}`).child('activitynames').set({
+            activity
+          });
+          return activity;
+        },
+
+        _optionactivityname: async (list) => {
+          let user = firebase.auth().currentUser
+          var userid= user.uid;
+          var date = moment().utcOffset('+02:00').format('DD-MM-YYYY');
+          //let dates=[];
+          firebase.database().ref('users/' + `${userid}`).child('optionactivity/').child('optionactivityname/').set({
+            list,
+            date
+          });
+
+
+        },
+
+
+    _calloptionactivityname: async () => {
+          let actlist;
+          let user = firebase.auth().currentUser
+          var userid= user.uid;
+          firebase.database().ref('users/' + `${userid}`).child('optionactivity/').child('optionactivityname/').on('value', (snapshot) => {
+            actlist = snapshot.val().list
+          });
+          return actlist
+        },
+
+        _callemotionhistory: async () => {
+          let user = firebase.auth().currentUser
+          var userid= user.uid;
+          if(user){
+            var ref = firebase.database().ref('users/' + `${userid}`).child('emo').child('videoEmo');
+              return ref.once('value').then((snapshot) => {
+            const chatObject = snapshot.val();
+
+
+           let chatList = Object.keys(chatObject).map(key => ({
+            ...chatObject[key],
+          }));
+
+             console.log(chatList.reverse());
+             return chatList.reverse();
+
+            }).catch(function(error) {
+              console.log( error)
+            })
+          }
+        },
     }
 
 export default Firebase

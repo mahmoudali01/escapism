@@ -124,9 +124,8 @@ class MyCam extends Component {
 
   Thumbnail = async (video) => {
     try {
-      const thumb = [];
-      let i,j;
-      for (i=0 , j=0 ; i<=10000 ; i=i+1000 , j++){
+      const thumb = []
+      for (let i=0 , j=0 ; i<=10000 ; i=i+1000 , j++){
       const { uri } = await VideoThumbnails.getThumbnailAsync(
         video.uri,
         {
@@ -166,20 +165,20 @@ class MyCam extends Component {
           })
       }
       const first = await this.mode(thumb)
-
+      
       console.log("this emo " + first)
-      await this.props.firebase.saveVideoEmo(first,this.state.time);
+      await this.props.firebase.saveVideoEmo(first);
     } catch (e) {
       console.warn(e);
     }
   }
 
   componentDidMount() {
-    //Getting the current date-time with required formate and UTC
+    //Getting the current date-time with required formate and UTC   
     var date = moment()
       .utcOffset('+02:00')
-      .format('YYYY-MM-DD hh:mm:ss a');
-
+      .format('YYYY-MM-DD');
+  
     this.setState({ time: date });
     //Settign up time to show
   }

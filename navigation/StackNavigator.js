@@ -9,8 +9,12 @@ import Status from '../screens/Status';
 // import Recommend from '../screens/Recommend';
 import MyCam  from '../screens/camera';
 import Activityoption  from '../screens/Activityoption';
-import Activity  from '../screens/Activity';
-import Conversation from '../screens/copyChat'
+//import Activity  from '../screens/Activity';
+import Conversation from '../screens/copyChat';
+import Select_activity  from '../screens/Select_activity';
+//import Delete_activity  from '../screens/Delete_activity';
+//import Moodchartvoften  from '../screens/Moodchartvoften';
+
 
 export const HomeNavigator = createAppContainer(
   createStackNavigator({
@@ -50,12 +54,18 @@ export const TrackerNavigator = createAppContainer(
     moodTracker: {
       screen: MTracker
     },
-    Activity:{
-      screen: Activity
+    Select_activity:{
+      screen: Select_activity
     },
+    // Delete_activity:{
+    //   screen: Delete_activity
+    // },
     Activityoption: {
       screen: Activityoption
     },
+    // Moodchartvoften: {
+    //   screen: Moodchartvoften
+    // },
 
   })
 )

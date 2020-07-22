@@ -20,8 +20,14 @@ class Activityoption extends Component {
          isDateTimePickerVisible: false,
          text: '',
          options: [],
+         activelist: [],
       }
    }
+
+   async UNSAFE_componentWillMount() {
+    this.state.activelist = await this.props.firebase._calloptionactivityname();
+    console.log(this.state.activelist)
+  }
   
     showDateTimePicker = () => {
       this.setState({ isDateTimePickerVisible: true });
@@ -82,8 +88,18 @@ class Activityoption extends Component {
   
     _option = async (options) => {
       //this.setState({ options}, () => console.warn('Selected Activities: ', options))
-      await this.props.firebase._saveoption(options)
-      this.props.navigation.navigate('Activity')
+      console.log(this.state.activelist);
+      const list = this.state.activelist
+      for (let i=0;i<list.length;i++)
+      {
+        await this.props.firebase._saveoption(options, i)
+        this.setState({options: []});
+        
+      }
+        
+      
+      this.props.navigation.navigate('Select_activity')
+      
     }
   
     render() {
