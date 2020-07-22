@@ -40,16 +40,16 @@ const items = [{
 }, {
   id: '11',
   name: 'shopping'
-  
+
 }, {
   id: '12',
   name: 'good meal'
-  
+
 }
 , {
   id: '13',
   name: 'cleaning'
-  
+
 }
 ]
 class MTracker extends Component{
@@ -57,12 +57,12 @@ class MTracker extends Component{
     this.props.navigation.navigate('Activity' ,{Status: this})
   }
   /*writeuserdata(selectedItems){//=>Write in fire base and retrive data
-    firebase.database().ref('Userdata/').set(  
-      {  
+    firebase.database().ref('Userdata/').set(
+      {
       time:this.state.time,
       selectedItems,
 
-     }).then(()=>{console.log('data');}).catch((error)=>  
+     }).then(()=>{console.log('data');}).catch((error)=>
      {console.log('error')})
      .then(() => {
        firebase.database().ref('Userdata/').on('value', (snapshot) =>{
@@ -72,7 +72,7 @@ class MTracker extends Component{
      })
      console.log(snapshot.val())
     })
-    }) 
+    })
     }*/
 state = {
  // value:'',
@@ -92,7 +92,7 @@ constructor(props) {
 componentDidMount() {
   var that = this;
 
-  //Getting the current date-time with required formate and UTC   
+  //Getting the current date-time with required formate and UTC
   var date = moment()
     .utcOffset('+02:00')
     .format('YYYY-MM-DD hh:mm:ss a');
@@ -104,7 +104,7 @@ componentDidMount() {
 
 onSelectedItemsChange = (selectedItems) => {
   this.setState({ selectedItems}, () => console.warn('Selected Activities: ', selectedItems))
-  
+
 }
   render () {
     const { selectedItems } = this.state
@@ -139,20 +139,20 @@ onSelectedItemsChange = (selectedItems) => {
         </View>
       <Button title = "save"
       onPress = {async() => await this.props.firebase.writeuserdata(this.state.selectedItems)}
-     
+
       ></Button>
-      <View style={styles.multiButtonContainer}>  
-                    <Button  
+      <View style={styles.multiButtonContainer}>
+                    <Button
                         onPress={this.handlecActivityNavigation}
-                        title="OK!"  
-                        color="#009933"  
-                    />  
+                        title="OK!"
+                        color="#009933"
+                    />
                     </View>
       {/* <Button style={styles.butto}
       color="#000"
       title = "Next"
 
-      onPress={this.handlecActivityNavigation} 
+      onPress={this.handlecActivityNavigation}
 
       ></Button> */}
       </View>
@@ -167,17 +167,17 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FBF0D2'
+    backgroundColor: '#f0ffff'
   },
   multiSelectContainer: {
     height: 400,
     width: '80%'
-  },  
-  multiButtonContainer: {  
-      margin: 20,  
-      flexDirection: 'row',  
-      justifyContent: 'space-between'  
-  }  
- 
+  },
+  multiButtonContainer: {
+      margin: 20,
+      flexDirection: 'row',
+      justifyContent: 'space-between'
+  }
+
 })
 export default withFirebaseHOC(MTracker);

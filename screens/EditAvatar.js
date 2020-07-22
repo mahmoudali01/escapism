@@ -14,7 +14,7 @@ class EditAvatar extends Component {
 
 
   selectImage = async () => {
-  
+
     let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
 
    if (permissionResult.granted === false) {
@@ -60,7 +60,7 @@ class EditAvatar extends Component {
 
   render() {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center',backgroundColor: "#f5f5dc" }}>
         <Text category='h2'>Edit Avatar</Text>
         <View>
           {this.state.avatarImage ? (

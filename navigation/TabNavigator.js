@@ -10,10 +10,10 @@ const TabNavigator = createBottomTabNavigator(
     Home: {
       screen: HomeNavigator,
       navigationOptions: {
-          title: 'Escapism',
-          tabBarLabel:'Escapism' ,
+          title: 'Home',
+          tabBarLabel:'Home' ,
           tabBarIcon: ({ color , size }) => (
-          <MaterialCommunityIcons name="doctor" color={color} size={25} />
+          <MaterialCommunityIcons name="home" color={color} size={25} />
 
         )
       }
@@ -48,7 +48,7 @@ const TabNavigator = createBottomTabNavigator(
         tabBarLabel:'Status' ,
 
         tabBarIcon: ({ color , size }) => (
-        <MaterialCommunityIcons name="account-tie" color={color} size={25} />
+        <MaterialCommunityIcons name="archive" color={color} size={25} />
 
       )
 

@@ -54,9 +54,12 @@ console.disableYellowBox=true;
       //  if (this.state.list != null) {
 
        return (
+         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor:'#e6e6fa'}}>
+
          <ScrollView>
 
  <View>
+
   {
     list.map((l, i) => (
       <TouchableOpacity
@@ -78,12 +81,15 @@ console.disableYellowBox=true;
 
   }
 </View>
+
  </ScrollView>
+ </View>
+
 
 );}else
       return (
         <View
-          style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          style={{ flex: 1, alignItems: 'center', justifyContent: 'center' ,backgroundColor:'#e6e6fa'}}>
           <Text>no status yet!</Text>
         </View>
       )
@@ -103,7 +109,7 @@ container:{
   marginBottom:20,
   width:380,
   borderRadius:20,
-  marginLeft: 17,
+  marginLeft: 7,
   //paddingLeft: 10,
 
 

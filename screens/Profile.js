@@ -59,6 +59,7 @@ class Profile extends Component {
                   >
                     <Text>Edit Profile</Text>
                   </TouchableOpacity>
+                
                   <TouchableOpacity style={styles.buttonContainer}
                   onPress={this.handleSignout}
                   >
@@ -79,8 +80,8 @@ const styles = StyleSheet.create({
     height:200,
   },
   avatar: {
-    width: 130,
-    height: 130,
+    width: 140,
+    height: 140,
     borderRadius: 63,
     borderWidth: 4,
     borderColor: "white",
@@ -103,12 +104,14 @@ const styles = StyleSheet.create({
     padding:30,
   },
   name:{
-    fontSize:28,
+    fontSize:30,
     color: "#696969",
-    fontWeight: "600"
+    fontWeight: "600",
+    marginTop:15,
+
   },
   info:{
-    fontSize:16,
+    fontSize:20,
     color: "#00BFFF",
     marginTop:10
   },
@@ -119,14 +122,14 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   buttonContainer: {
-    marginTop:10,
+    marginTop:30,
     height:45,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom:20,
-    width:250,
-    borderRadius:30,
+    marginBottom:5,
+    width:150,
+    borderRadius:25,
     backgroundColor: "#00BFFF",
   },
 });

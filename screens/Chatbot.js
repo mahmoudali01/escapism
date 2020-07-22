@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View ,TouchableOpacity} from 'react-native';
-import { GiftedChat  } from 'react-native-gifted-chat';
+import { GiftedChat ,Bubble  } from 'react-native-gifted-chat';
 import { Dialogflow_V2 } from 'react-native-dialogflow';
 import { dialogflowConfig } from '../env';
 import { withFirebaseHOC } from '../config/Firebase'
@@ -222,13 +222,32 @@ console.disableYellowBox=true;
 
 
   }
+  renderBubble (props) {
+      return (
+        <Bubble
+         {...props}
+         textStyle={{
+           right: {
+             color: 'white',
+
+           },
+         }}
+         wrapperStyle={{
+           left: {
+             backgroundColor: 'white',
+           },
+
+         }}
+       />
+      )
+    }
 
 
     render() {
       const { userDetails , messages } = this.state
 
       return (
-        <View style={{ flex: 1, backgroundColor: '#FBF0D2' }}>
+        <View style={{ flex: 1, backgroundColor: '#fffaf0' }}>
           <GiftedChat
             showUserAvatar = 'true'
             isTyping = 'true'
@@ -246,6 +265,8 @@ console.disableYellowBox=true;
               id:  userDetails[3],
             }}
             renderActions={this.renderCustomActions}
+            renderBubble={this.renderBubble}
+
 
           />
         </View>
