@@ -35,7 +35,7 @@ class Conversation extends Component {
     const { statusChat, userDetails  } = this.state
 
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1 ,backgroundColor: '#fffaf0'}}>
          <GiftedChat
             showUserAvatar = 'true'
             isTyping = {false}
