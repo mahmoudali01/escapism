@@ -86,24 +86,6 @@ const Firebase = {
 
 },
 
-// getUserDetails: () => {
-//    let user = firebase.auth().currentUser
-//      var userid= user.uid;
-//      var ref = firebase.database().ref('users/').child(`${userid}`);
-//
-//        return ref.once('value').then((snapshot) => {
-//        var name = snapshot.child("name").val();
-//        var email = snapshot.child("email").val();
-//        var uri = snapshot.child("avatar").val();
-//        var uid = snapshot.child("uid").val();
-//
-//
-//        var arr =[name,email,uri,uid];
-//        return arr;
-//      }).catch(function(error) {
-//        console.log( error)
-//      })
-//  },
 getUserDetails: () => {
    let user = firebase.auth().currentUser
      var userid= user.uid;
@@ -240,12 +222,6 @@ pushMessage: message  =>{
               }
                 },
 
- //  textApi: (text) => {
- //  let user = firebase.auth().currentUser
- //    var userid= user.uid;
- //    var ref = firebase.database().ref('users/' + `${userid}` ).child("emo");
- //    ref.push(text);
- // },
 
  saveEmo: async (emo) => {
    var date = moment().utcOffset('+02:00').format('DD-MM-YYYY');
@@ -347,53 +323,7 @@ pushMessage: message  =>{
    }
 
 },
- // _showdata: async () => {
- //   let arrdata = []
- //    firebase.database().ref('Entry/').on('value', (snapshot) =>{
- //      arrdata = snapshot.val().selectedItems
- //    })
- //    return arrdata;
- //  },
 
-
-  // writeuserdata: async (selectedItems) => {//=>Write in fire base and retrive data
-  //   firebase.database().ref('Userdata/').set(
-  //     {
-  //     time:this.state.time,
-  //     selectedItems,
-  //
-  //    }).then(()=>{console.log('data');}).catch((error)=>
-  //    {console.log('error')})
-  //    .then(() => {
-  //      firebase.database().ref('Userdata/').on('value', (snapshot) =>{
-  //      this.setState({
-  //     selectedItems: snapshot.val().selectedItems,
-  //     time:snapshot.val().time,
-  //    })
-  //    console.log(snapshot.val())
-  //   })
-  //   })
-  //   },
-
-    // _selecteditems: async (initialArr) => {
-    //   firebase.database().ref('Userdata/').on('value', (snapshot) =>{
-    //     initialArr = snapshot.val().selectedItems
-    //   })
-    //   return initialArr;
-    // },
-
-    // _time: async (timeArr) => {
-    //   firebase.database().ref('Userdata/').on('value', (snapshot) =>{
-    //     timeArr = snapshot.val().time
-    //   })
-    //   return timeArr;
-    // },
-
-    // _activityname: async (item) => {
-    //   firebase.database().ref('/activity_name').set({
-    //     item
-    //   });
-    // },
 
     saveVideoEmo: async (emotion) => {
       let user = firebase.auth().currentUser

@@ -14,7 +14,7 @@ import * as MTracker  from './MTracker';
 class Activityoption extends Component {
     constructor(props){
       super(props);
-   
+
       this.state = {
          isChecked: false,
          isDateTimePickerVisible: false,
@@ -28,64 +28,64 @@ class Activityoption extends Component {
     this.state.activelist = await this.props.firebase._calloptionactivityname();
     console.log(this.state.activelist)
   }
-  
+
     showDateTimePicker = () => {
       this.setState({ isDateTimePickerVisible: true });
     };
-  
+
     hideDateTimePicker = () => {
       this.setState({ isDateTimePickerVisible: false });
     };
-  
+
     handleDatePicked = async date => {
       //console.log("A date has been picked: ", date);
       this.hideDateTimePicker();
-      var formattedDate = format(date, "yyyy-MM-dd");
+      var formattedDate = format(date, "dd-MM-yyyy");
       var formattedtime = format(date, "H:mma")
-  
-      var milliseconds = date.getTime(); 
-  
+
+      var milliseconds = date.getTime();
+
       if(this.state.isChecked == true) {
         const localNotification = {
             title: 'done',
             body: 'done!'
         };
-  
+
         const schedulingOptions = {
             time: milliseconds,
             repeat: this.state.options[0]
         }
-  
+
         // Notifications show only when app is not active.
         // (ie. another app being used or device's screen is locked)
         Notifications.scheduleLocalNotificationAsync(
             localNotification, schedulingOptions
         );
       }
-  
+
       console.log(formattedDate);
       console.log(formattedtime);
       this.state.options[2]=formattedDate;
     };
-  
+
     handleNotification() {
         console.warn('ok! got your notif');
     }
-  
+
     async componentDidMount() {
         // We need to ask for Notification permissions for ios devices
         let result = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-  
+
         if (Constants.isDevice && result.status === 'granted') {
             console.log('Notification permissions granted.')
         }
-  
+
         // If we want to do something with the notification when the app
-        // is active, we need to listen to notification events and 
+        // is active, we need to listen to notification events and
         // handle them in a callback
         Notifications.addListener(this.handleNotification);
     }
-  
+
     _option = async (options) => {
       //this.setState({ options}, () => console.warn('Selected Activities: ', options))
       console.log(this.state.activelist);
@@ -94,14 +94,14 @@ class Activityoption extends Component {
       {
         await this.props.firebase._saveoption(options, i)
         this.setState({options: []});
-        
+
       }
-        
-      
+
+
       this.props.navigation.navigate('Select_activity')
-      
+
     }
-  
+
     render() {
     return (
       <View
@@ -130,7 +130,7 @@ class Activityoption extends Component {
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: '#F5FCFF',}}
-            
+
           onClick={()=>{
             this.setState({
               isChecked:!this.state.isChecked
@@ -154,7 +154,7 @@ class Activityoption extends Component {
           style={{width:330, marginTop:40,}}
           onChangeText={text => this.setState({ text })}
         />
-        <TouchableOpacity 
+        <TouchableOpacity
           style={{
             padding: 20,
             width: "30%",
@@ -170,5 +170,5 @@ class Activityoption extends Component {
     }
   }
   //<Button onPress={this._show(isChecked)} title='add'/>
-  
+
   export default withFirebaseHOC(Activityoption);
