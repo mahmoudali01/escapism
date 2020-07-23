@@ -125,8 +125,8 @@ class MyCam extends Component {
   Thumbnail = async (video) => {
     try {
       const thumb = []
-      let j;
-      for (let i=0 , j=0 ; i<=10000 ; i=i+1000 , j++){
+      let i,j;
+      for (i=0 , j=0 ; i<=10000 ; i=i+1000 , j++){
       const { uri } = await VideoThumbnails.getThumbnailAsync(
         video.uri,
         {
@@ -178,7 +178,7 @@ class MyCam extends Component {
     //Getting the current date-time with required formate and UTC
     var date = moment()
       .utcOffset('+02:00')
-      .format('YYYY-MM-DD');
+      .format('DD-MM-YYYY');
 
     this.setState({ time: date });
     //Settign up time to show
